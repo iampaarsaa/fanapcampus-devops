@@ -51,3 +51,20 @@
     state: present
     update_cache: true
     update_cache_retries: 3
+  failed_when: false
+  environment: "{{ proxy_env }}"
+
+- name: Installing_Docker_Latest_Packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    update_cache_retries: 3
+    lock_timeout: 60
+    force_apt_get: true
+    autoclean: true
+    autoremove: true
+    force: true
+  loop: "{{ docker_latest_packages }}"
+  environment: "{{ proxy_env }}"
