@@ -40,3 +40,15 @@
     lock_timeout: 60
   loop:
     - apache2-utils
+    - python3-passlib
+
+- name: Creating_Registry_Userfile_Htpasswd
+  become: true
+  community.general.htpasswd:
+    path: /etc/nginx/auth/nginx.htpasswd
+    owner: root
+    group: root
+    mode: '0644'
+    state: present
+    name: parsa
+    password: parsa
