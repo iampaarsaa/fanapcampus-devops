@@ -16,3 +16,18 @@ volumes:
     db-data:
         name: db-data
         driver: local
+
+services:
+    mysql:
+        image: mysql:5.7
+        container_name: mysql
+        volumes:
+            - db-data: /var/lib/mysql
+        networks:
+            - wp-net
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: salamsalam
+            MYSQL_DATABASE: devops
+            MYSQL_USER: parsa
+            MYSQL_PASSWORD: byebye
