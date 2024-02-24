@@ -41,6 +41,7 @@
     owner: root
     group: root
     mode: '0644'
+  environment: "{{ proxy_env }}"
 
 - name: Adding_Docker_Source_List
   become: true
