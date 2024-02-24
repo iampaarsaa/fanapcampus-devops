@@ -41,3 +41,12 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Adding_Docker_Source_List
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] \
+      https://download.docker.com/linux/ubuntu jammy stable"
+    state: present
+    update_cache: true
+    update_cache_retries: 3
