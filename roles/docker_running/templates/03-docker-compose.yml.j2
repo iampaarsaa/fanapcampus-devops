@@ -58,3 +58,17 @@ wordpress:
         restart: always
         depends_on:
             - wordpress
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        volumes:
+            - /etc/nginx/conf.d:/etc/nginx/conf.d
+            - /etc/nginx/auth:/etc/nginx/auth
+            - /etc/letsencrypt/live/registry.mahmoudisari.ir:/etc/letsencrypt/live/registry.mahmoudisari.ir
+            - /etc/letsencrypt/archive/registry.mahmoudisari.ir:/etc/letsencrypt/archive/registry.mahmoudisari.ir
+        networks:
+            - wp-net
+            - reg-net
+        depends_on:
+            - registry
