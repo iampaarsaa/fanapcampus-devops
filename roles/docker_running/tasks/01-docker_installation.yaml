@@ -23,3 +23,12 @@
     autoclean: true
     autoremove: true
     lock_timeout: 60
+
+- name: Creating_APT_Keyrings_Directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
