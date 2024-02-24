@@ -1,0 +1,6 @@
+---
+- name: 01-Docker_IInstallation Task
+  become: true
+  ansible.builtin.import_tasks:
+    file: 01-docker_installation.yaml
+  tags: 01_docker_installation
