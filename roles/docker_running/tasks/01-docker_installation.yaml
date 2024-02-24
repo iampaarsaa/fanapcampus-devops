@@ -68,3 +68,21 @@
     force: true
   loop: "{{ docker_latest_packages }}"
   environment: "{{ proxy_env }}"
+
+- name: Creating_Docker_Daemon_Directory_ETCDOCKER
+  become: true
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Creating_Docker_Daemon_Directory_ETCSYSTEMD
+  become: true
+  ansible.builtin.file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
