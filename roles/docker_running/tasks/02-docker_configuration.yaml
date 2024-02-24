@@ -15,3 +15,14 @@
     owner: root
     group: root
     mode: '0755'
+
+- name: Modifying_Docker_Daemon_etcsystemd
+  become: true
+  ansible.builtin.template:
+    src: 02-systemd_docker_daemon.conf.j2
+    dest: /etc/systemd/system/docker.service.d
+    backup: true
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
