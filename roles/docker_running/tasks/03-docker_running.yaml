@@ -1,0 +1,18 @@
+---
+- name: Creating_Registry_Userfile_Directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/nginx/auth
+    state: directory
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Creating_Nginx_Data_Directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/nginx/data
+    state: directory
+    owner: root
+    group: root
+    mode: '0644'
