@@ -27,5 +27,4 @@
     mode: '0644'
     force: true
   notify:
-    - Restart_daemonreload
-    - Restart_docker
+    - Restart_Docker
