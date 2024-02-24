@@ -1,0 +1,12 @@
+---
+- name: Removing_Unofficial_Packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: absent
+    force: true
+    force_apt_get: true
+    purge: true
+    clean: true
+    lock_timeout: 60
+  loop: "{{ docker_obselete_packages }}"
