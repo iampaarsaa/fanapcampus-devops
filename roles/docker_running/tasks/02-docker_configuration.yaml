@@ -42,15 +42,6 @@
   notify:
     - Restart_Docker
 
-- name: Disable_Nginx_Service_Inside_Server
-  become: true
-  ansible.builtin.systemd:
-    daemon-reload: true
-    name: nginx
-    state: stopped
-    enabled: false
-    masked: true
-
 - name: Modifying_Nginx_Configuration_Files
   become: true
   ansible.builtin.template:
@@ -61,3 +52,12 @@
     group: root
     mode: '0644'
     force: true
+
+- name: Disable_Nginx_Service_Inside_Server
+  become: true
+  ansible.builtin.systemd:
+    daemon-reload: true
+    name: nginx
+    state: stopped
+    enabled: false
+    masked: true
