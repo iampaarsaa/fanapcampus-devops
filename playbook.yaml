@@ -1,7 +1,7 @@
 ---
 - name: Docker_Running Tasks
   hosts: main
-  check_mode: true
+  check_mode: false
   gather_facts: true
   roles:
     - { role: docker_running, become: true, tags: docker_running }
