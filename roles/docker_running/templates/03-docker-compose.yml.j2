@@ -31,3 +31,19 @@ services:
             MYSQL_DATABASE: devops
             MYSQL_USER: parsa
             MYSQL_PASSWORD: byebye
+
+wordpress:
+        image: wordpress:latest
+        container_name: wordpress
+        volumes:
+            - wp-data: /var/www/html
+        networks:
+            - wp-net
+        restart: always
+        environment:
+            WORDPRESS_DB_HOST: mysql:3306
+            WORDPRESS_DB_USER: parsa
+            WORDPRESS_DB_NAME: devops
+            WORDPRESS_DB_PASSWORD: byebye
+        depends_on:
+            - mysql
