@@ -20,7 +20,7 @@
   become: true
   ansible.builtin.template:
     src: 02-systemd_docker_daemon.conf.j2
-    dest: /etc/systemd/system/docker.service.d
+    dest: /etc/systemd/system/docker.service.d/daemon.conf
     backup: true
     owner: root
     group: root
@@ -33,7 +33,7 @@
   become: true
   ansible.builtin.template:
     src: 02-docker_daemon.json.j2
-    dest: /etc/docker
+    dest: /etc/docker/daemon.json
     backup: true
     owner: root
     group: root
@@ -50,3 +50,14 @@
     state: stopped
     enabled: false
     masked: true
+
+- name: Modifying_Nginx_Configuration_Files
+  become: true
+  ansible.builtin.template:
+    src: 02-nginx.conf.j2
+    dest: /etc/nginx/conf.d/nginx.conf
+    backup: true
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
