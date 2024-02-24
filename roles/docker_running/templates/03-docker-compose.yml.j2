@@ -47,3 +47,14 @@ wordpress:
             WORDPRESS_DB_PASSWORD: byebye
         depends_on:
             - mysql
+
+    registry:
+        image: registry:2
+        container_name: registry
+        volumes:
+            - /etc/nginx/data:/var/lib/registry
+        networks:
+            - reg-net
+        restart: always
+        depends_on:
+            - wordpress
