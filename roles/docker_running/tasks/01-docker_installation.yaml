@@ -68,32 +68,3 @@
     force: true
   loop: "{{ docker_latest_packages }}"
   environment: "{{ proxy_env }}"
-
-- name: Creating_Docker_Daemon_Directory_ETCDOCKER
-  become: true
-  ansible.builtin.file:
-    path: /etc/docker
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Creating_Docker_Daemon_Directory_ETCSYSTEMD
-  become: true
-  ansible.builtin.file:
-    path: /etc/systemd/system/docker.service.d
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Modifying_Docker_Daemon_ETCSYSTEMD
-  become: true
-  ansible.builtin.template:
-    src: 01-systemd_docker_daemon.conf.j2
-    dest: /etc/systemd/system/docker.service.d
-    backup: true
-    owner: root
-    group: root
-    mode: '0644'
-    force: true
