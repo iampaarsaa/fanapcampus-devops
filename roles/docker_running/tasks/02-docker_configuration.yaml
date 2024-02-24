@@ -28,3 +28,16 @@
     force: true
   notify:
     - Restart_Docker
+
+- name: Modifying_Docker_Daemon_etcdocker
+  become: true
+  ansible.builtin.template:
+    src: 02-docker_daemon.json.j2
+    dest: /etc/docker
+    backup: true
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - Restart_Docker
