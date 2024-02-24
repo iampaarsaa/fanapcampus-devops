@@ -16,3 +16,27 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Updating_APT_Source_List_For_Htpasswd
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    update_cache_retries: 3
+    cache_valid_time: 86400
+    autoclean: true
+    autoremove: true
+    force_apt_get: true
+    force: true
+    upgrade: safe
+    lock_timeout: 60
+
+- name: Installing_Apache2_Utils_Htpasswd
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    force_apt_get: true
+    force: true
+    lock_timeout: 60
+  loop:
+    - apache2-utils
