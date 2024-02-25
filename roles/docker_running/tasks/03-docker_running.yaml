@@ -54,17 +54,14 @@
     name: parsa
     password: parsa
 
-# - name: Obtaining_SSL_Certificate_Certbot
-#   become: true
-#   ansible.builtin.command:
-#     cmd: >
-#       /bin/bash -c 'certbot certonly \
-#       --standalone --noninteractive --agree-tos \
-#       -d wordpress.mahmoudisari.ir \
-#       -d registry.mahmoudisari.ir \
-#       --preferred-challenges http-01 \
-#       --email iamapmas1382@outlook.com'
-#   changed_when: false
+- name: Obtaining_SSL_Certificate
+  become: true
+  ansible.builtin.command:
+    cmd: "certbot certonly \
+      --standalone --noninteractive  \
+      --agree-tos -d wordpress.mahmoudisari.ir -d registry.mahmoudisari.ir \
+      --preferred-challenges http-01 --email iamapmas1382@outlook.com"
+  changed_when: false
 
 - name: Creating_Docker_Compose_Directory
   become: true
@@ -107,3 +104,4 @@
     state: present
     recreate: always
     dependencies: true
+  environment: "{{ proxy_env }}"
