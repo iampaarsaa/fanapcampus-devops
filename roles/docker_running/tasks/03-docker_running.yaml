@@ -92,10 +92,18 @@
     cmd: "cd /home/ubuntu/project && docker compose config"
   changed_when: false
 
-- name: Docker_Compose_Down_Execution
+- name: Docker_Compose_Down_Prepairation
   become: true
   community.docker.docker_compose_v2:
     state: absent
     project_src: /home/ubuntu/project
     remove_volumes: true
     remove_orphans: true
+
+- name: Docker_Compose_Up_Execution
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: /home/ubuntu/project
+    state: present
+    recreate: always
+    dependencies: true
