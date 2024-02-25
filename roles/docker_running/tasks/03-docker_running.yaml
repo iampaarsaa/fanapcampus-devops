@@ -74,3 +74,14 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Modifying_Docker_Compose_File
+  become: true
+  ansible.builtin.template:
+    src: 03-docker-compose.yml.j2
+    dest: /home/ubuntu/project/compose.yml
+    backup: true
+    owner: root
+    group: root
+    mode: '0744'
+    force: true
