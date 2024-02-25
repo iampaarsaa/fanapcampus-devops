@@ -22,7 +22,7 @@ services:
         image: mysql:5.7
         container_name: mysql
         volumes:
-            - db-data: /var/lib/mysql
+            - db-data:/var/lib/mysql
         networks:
             - wp-net
         restart: always
@@ -36,7 +36,7 @@ services:
         image: wordpress:latest
         container_name: wordpress
         volumes:
-            - wp-data: /var/www/html
+            - wp-data:/var/www/html
         networks:
             - wp-net
         restart: always
