@@ -24,7 +24,7 @@
 #     backup: true
 #     owner: root
 #     group: root
-#     mode: '0644'
+#     mode: '0755'
 #     force: true
 #   notify:
 #     - Restart_Docker
@@ -37,7 +37,7 @@
     backup: true
     owner: root
     group: root
-    mode: '0644'
+    mode: '0755'
     force: true
   notify:
     - Restart_Docker
@@ -50,7 +50,7 @@
     backup: true
     owner: root
     group: root
-    mode: '0644'
+    mode: '0755'
     force: true
 
 - name: Disable_Nginx_Service_Inside_Server
