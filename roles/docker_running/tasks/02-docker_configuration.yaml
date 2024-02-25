@@ -39,8 +39,37 @@
     group: root
     mode: '0755'
     force: true
-  notify:
-    - Restart_Docker
+
+- name: Adding_User_To_Docker_Group
+  become: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c 'usermod -aG docker ubuntu'"
+  changed_when: false
+
+- name: Making_Sure_Docker_Settings_Applied
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+    name: docker
+    state: restarted
+
+- name: Creating_Nginx_Directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/nginx/
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: Creating_Nginx_Confd_Directoy_For_ConfigFile
+  become: true
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
 
 - name: Modifying_Nginx_Configuration_Files
   become: true
@@ -61,3 +90,4 @@
     state: stopped
     enabled: false
     masked: true
+  failed_when: false
