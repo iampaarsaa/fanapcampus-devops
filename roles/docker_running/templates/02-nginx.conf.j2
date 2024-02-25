@@ -6,27 +6,25 @@ map $upstream_http_docker_distribution_api_version $docker_distribution_api_vers
     '' 'registry/2.0';
 }
 
-server
-{
+server {
     listen 443 ssl;
     server_name registry.mahmoudisari.ir;
 
-    ssl_certificate /etc/letsencrypt/live/wordpress.mahmoudisari.ir/fullchain.pem
-    ssl_certificate_key /etc/letsencrypt/live/wordpress.mahmoudisari.ir/privkey.pem
+    ssl_certificate /etc/letsencrypt/live/wordpress.mahmoudisari.ir/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/wordpress.mahmoudisari.ir/privkey.pem;
 
     client_max_body_size 0;
 
     chunked_transfer_encoding on;
 
-    location /
-    {
-        return 301 https://$host$request_uri/v2/;
+    location / {
+        if ($request_uri !~* "^/v2") {
+            return 301 https://$host/v2;
+        }
     }
 
-    location /v2/ 
-    {
-        if ($http_user_agent ~ "^(docker\/1\.(3|4|5(?!\.[0-9]-dev))|Go ).*$" ) 
-        {
+    location /v2 {
+        if ($http_user_agent ~ "^(docker\/1\.(3|4|5(?!\.[0-9]-dev))|Go ).*$" ) {
             return 404;
         }
 
@@ -45,37 +43,34 @@ server
     }
 }
 
-server
-{
+server {
     listen 80;
-    server_name: registry.mahmoudisari.ir;
+    server_name registry.mahmoudisari.ir;
     return 301 https://$host$request_uri;
 }
 
 upstream wordpress-agent {
-    server wordpress:80
+    server wordpress:80;
 }
 
-server
-{
+server {
     listen 443 ssl;
-    server_name: wordpress.mahmoudisari.ir;
+    server_name wordpress.mahmoudisari.ir;
 
-    ssl_certificate /etc/letsencrypt/live/wordpress.mahmoudisari.ir/fullchain.pem
-    ssl_certificate_key /etc/letsencrypt/live/wordpress.mahmoudisari.ir/privkey.pem
+    ssl_certificate /etc/letsencrypt/live/wordpress.mahmoudisari.ir/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/wordpress.mahmoudisari.ir/privkey.pem;
 
     location / {
-    proxy_pass                           http://wordpress-agent;
-    proxy_set_header  Host               $http_host;
-    proxy_set_header  X-Real-IP          $remote_addr;
-    proxy_set_header  X-Forwarded-For    $proxy_add_x_forwarded_for;
-    proxy_set_header  X-Forwarded-Proto  $scheme;
-    add_header X-Powered-By "Parsa Mahmoudi Sari | mahmoudisari.ir";
+        proxy_pass                           http://wordpress-agent;
+        proxy_set_header  Host               $http_host;
+        proxy_set_header  X-Real-IP          $remote_addr;
+        proxy_set_header  X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto  $scheme;
+        add_header X-Powered-By "Parsa Mahmoudi Sari | mahmoudisari.ir";
     }
 }
 
-server 
-{
+server {
     listen 80;
     server_name wordpress.mahmoudisari.ir;
     return 301 https://$host$request_uri;
