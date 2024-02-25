@@ -79,9 +79,23 @@
   become: true
   ansible.builtin.template:
     src: 03-docker-compose.yml.j2
-    dest: /home/ubuntu/project/compose.yml
+    dest: /home/ubuntu/project/docker-compose.yml
     backup: true
     owner: root
     group: root
     mode: '0744'
     force: true
+
+- name: Test_Docker_Compose_Configuration_File
+  become: true
+  ansible.builtin.command:
+    cmd: "cd /home/ubuntu/project && docker compose config"
+  changed_when: false
+
+- name: Docker_Compose_Down_Execution
+  become: true
+  community.docker.docker_compose_v2:
+    state: absent
+    project_src: /home/ubuntu/project
+    remove_volumes: true
+    remove_orphans: true
