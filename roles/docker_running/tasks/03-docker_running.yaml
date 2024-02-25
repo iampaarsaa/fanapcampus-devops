@@ -65,3 +65,12 @@
 #       --preferred-challenges http-01 \
 #       --email iamapmas1382@outlook.com'
 #   changed_when: false
+
+- name: Creating_Docker_Compose_Directory
+  become: true
+  ansible.builtin.file:
+    path: /home/ubuntu/project
+    state: directory
+    owner: root
+    group: root
+    mode: '0644'
