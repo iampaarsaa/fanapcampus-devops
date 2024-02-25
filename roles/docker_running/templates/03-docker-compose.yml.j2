@@ -70,5 +70,8 @@ services:
         networks:
             - wp-net
             - reg-net
+        ports:
+            - 80:80
+            - 443:443
         depends_on:
             - registry
