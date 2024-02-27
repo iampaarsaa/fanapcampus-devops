@@ -1,0 +1,6 @@
+---
+- name: 01-Hardware_Related.yaml
+  become: true
+  ansible.builtin.import_tasks:
+    file: 01-hardware_related.yaml
+  tags: 01-hardware_related.yaml
