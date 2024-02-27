@@ -104,3 +104,25 @@
     mode: "0755"
     force: true
     backup: true
+
+- name: Modifying_Hosts_Allow_Conf
+  become: true
+  ansible.builtin.template:
+    src: 01-hosts.allow.j2
+    dest: /etc/hosts.allow
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+
+- name: Modifying_Hosts_Deny_Conf
+  become: true
+  ansible.builtin.template:
+    src: 01-hosts.deny.j2
+    dest: /etc/hosts.deny
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
