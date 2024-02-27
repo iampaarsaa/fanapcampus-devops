@@ -11,3 +11,18 @@
     autoclean: true
     autoremove: true
     lock_timeout: 60
+
+- name: Installing_Hardening_Required_Packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    update_cache_retries: 3
+    lock_timeout: 60
+    force_apt_get: true
+    autoclean: true
+    autoremove: true
+    force: true
+  loop: "{{ hardening_required_packages }}"
+  environment: "{{ proxy_env }}"
