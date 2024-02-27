@@ -1,0 +1,13 @@
+---
+- name: Updating_APT_Source_List
+  become: true
+  ansible.builtin.apt:
+    force: true
+    force_apt_get: true
+    update_cache: true
+    update_cache_retries: 3
+    cache_valid_time: 86400
+    upgrade: safe
+    autoclean: true
+    autoremove: true
+    lock_timeout: 60
