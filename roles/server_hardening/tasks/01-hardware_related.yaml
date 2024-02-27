@@ -42,3 +42,19 @@
     group: root
     mode: "0755"
     force: true
+
+- name: Removing_TMP_Directory_From_Fstab
+  become: true
+  ansible.posix.mount:
+    path: /tmp
+    state: absent
+
+- name: Removing_Floppy_From_Fstab
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    owner: root
+    group: root
+    mode: "0755"
+    state: absent
+    regexp: '^(.*)floppy(.*)$'
