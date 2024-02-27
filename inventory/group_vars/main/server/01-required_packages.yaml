@@ -1,0 +1,27 @@
+---
+hardening_required_packages:
+  - software-properties-common
+  - sudo
+  - telnet
+  - wget
+  - curl
+  - axel
+  - git
+  - vim
+  - nano
+  - bash-completion
+  - atop
+  - htop
+  - iftop
+  - ncdu
+  - jq
+  - unzip
+  - zip
+  - net-tools
+  - dnsutils
+  - ntp
+  - fail2ban
+  - tcpdump
+  - iptables-persistent
+  - libpwquality-common
+  - cracklib-runtime
