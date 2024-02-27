@@ -80,3 +80,27 @@
     group: root
     mode: "0755"
     force: true
+
+- name: Modifying_Systemd_Resolved_Conf
+  become: true
+  ansible.builtin.template:
+    src: 01-resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+  notify:
+    - Reload_Systemd
+
+- name: Modifying_Etc_Resolv_Conf
+  become: true
+  ansible.builtin.template:
+    src: 01-resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+    backup: true
