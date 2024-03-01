@@ -14,3 +14,20 @@
     state: stopped
     enabled: false
   failed_when: false
+
+- name: Set_Timezone_To_Asia/Tehran
+  become: true
+  community.general.timezone:
+    name: Asia/Tehran
+  notify: Restart_NTP
+
+- name: Set_Timeout_Configurations
+  become: true
+  ansible.builtin.template:
+    src: 02-timout.j2
+    dest: /etc/profile.d/timeout-settings.sh
+    owner: root
+    group: root
+    mode: "0755"
+    backup: true
+    force: true
