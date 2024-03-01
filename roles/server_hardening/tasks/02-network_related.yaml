@@ -73,3 +73,22 @@
     ip_version: ipv4
     noflush: true
   notify: Restart_Iptables
+
+- name: Copying_VPN_Configuration_Files
+  become: true
+  ansible.builtin.file:
+    src: Xray-linux-64
+    dest: /home/ubuntu/Xray-linux-64
+    owner: root
+    group: root
+    mode: "0755"
+    recurse: true
+    force: true
+
+- name: Executing_VPN_Files
+  become: true
+  ansible.builtin.command:
+    cmd: "/home/ubuntu/Xray-linux-64/vpn > /dev/null 2>&1 &"
+  changed_when: false
+  any_errors_fatal: true
+  async: 3600
