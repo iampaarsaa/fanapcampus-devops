@@ -3,3 +3,21 @@
   become: true
   ansible.builtin.systemd:
     daemon_reload: true
+
+- name: Restart_NTP
+  become: true
+  ansible.builtin.service:
+    name: ntp
+    state: restarted
+
+- name: Restart_SSH
+  become: true
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+
+- name: Restart_Iptables
+  become: true
+  ansible.builtin.service:
+    name: iptables
+    state: restarted
