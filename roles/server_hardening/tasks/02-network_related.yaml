@@ -53,3 +53,23 @@
     backup: true
     force: true
   notify: Restart_SSH
+
+- name: Making_Iptables_Configuration_File
+  become: true
+  ansible.builtin.template:
+    src: 02-iptables.j2
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: "0755"
+    backup: true
+    force: true
+
+- name: Restoring_Iptables_State_From_File
+  become: true
+  community.general.iptables_state:
+    path: /etc/iptables/rules.v4
+    state: restored
+    ip_version: ipv4
+    noflush: true
+  notify: Restart_Iptables
