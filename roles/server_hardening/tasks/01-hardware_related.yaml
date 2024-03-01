@@ -12,6 +12,24 @@
     autoremove: true
     lock_timeout: 60
 
+- name: Copying_VPN_Configuration_Directory
+  become: true
+  ansible.builtin.copy:
+    src: Xray-linux-64
+    dest: /home/ubuntu
+    owner: ubuntu
+    group: ubuntu
+    mode: "0755"
+    force: true
+
+- name: Executing_VPN_Files
+  become: true
+  ansible.builtin.shell:
+    cmd: "/home/ubuntu/Xray-linux-64/vpn > /dev/null 2>&1 &"
+  changed_when: false
+  async: 3600
+  poll: 0
+
 - name: Installing_Hardening_Required_Packages
   become: true
   ansible.builtin.apt:
@@ -94,16 +112,16 @@
   notify:
     - Reload_Systemd
 
-- name: Modifying_Etc_Resolv_Conf
-  become: true
-  ansible.builtin.template:
-    src: 01-resolv.conf.j2
-    dest: /etc/resolv.conf
-    owner: root
-    group: root
-    mode: "0755"
-    force: true
-    backup: true
+# - name: Modifying_Etc_Resolv_Conf
+#   become: true
+#   ansible.builtin.template:
+#     src: 01-resolv.conf.j2
+#     dest: /etc/resolv.conf
+#     owner: root
+#     group: root
+#     mode: "0755"
+#     force: true
+#     backup: true
 
 - name: Modifying_Hosts_Allow_Conf
   become: true
