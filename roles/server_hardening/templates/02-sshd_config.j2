@@ -1,0 +1,35 @@
+Include /etc/ssh/sshd_config.d/*.conf
+
+Port 22
+ListeningAddress 0.0.0.0
+
+LogLevel VERBOSE
+
+PermitRootLogin without-password
+
+MaxAuthTries 3
+MaxSessions 5
+
+PasswordAuthentication no
+
+ChallengeResponseAuthentication no
+
+UsePAM yes
+
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+PrintMotd no
+TCPKeepAlive no
+Compression no
+ClientAliveCountMax 2
+
+
+Banner /etc/issue
+
+AcceptEnv LANG LC_*
+subsystem SFTP /usr/lib/openssh/sftp-server
+
+AllowUsers ubuntu
+
+AllowGroups ubuntu
