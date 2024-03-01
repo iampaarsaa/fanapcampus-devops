@@ -1,5 +1,6 @@
 ---
 - name: Stop_And_Disable_UFW
+  become: true
   ansible.builtin.service:
     name: ufw
     state: stopped
@@ -7,6 +8,7 @@
   failed_when: false
 
 - name: Stop_And_Disable_Postfix
+  become: true
   ansible.builtin.service:
     name: postfix
     state: stopped
