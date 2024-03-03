@@ -112,16 +112,17 @@
   notify:
     - Reload_Systemd
 
-# - name: Modifying_Etc_Resolv_Conf
-#   become: true
-#   ansible.builtin.template:
-#     src: 01-resolv.conf.j2
-#     dest: /etc/resolv.conf
-#     owner: root
-#     group: root
-#     mode: "0755"
-#     force: true
-#     backup: true
+- name: Modifying_Etc_Resolv_Conf
+  become: true
+  ansible.builtin.template:
+    src: 01-resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+    backup: true
+    follow: true
 
 - name: Modifying_Hosts_Allow_Conf
   become: true
