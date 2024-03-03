@@ -24,7 +24,7 @@
 - name: Set_Timeout_Configurations
   become: true
   ansible.builtin.template:
-    src: 02-timout.j2
+    src: 02-timeout.j2
     dest: /etc/profile.d/timeout-settings.sh
     owner: root
     group: root
@@ -34,13 +34,14 @@
 
 - name: Copying_SSH_Banner_File
   become: true
-  ansible.builtin.file:
-    src: 02-ssh_banner
+  ansible.builtin.copy:
+    src: ssh_banner
     dest: /etc/issue
     owner: root
     group: root
     mode: "0755"
     force: true
+    backup: true
 
 - name: Making_SSHD_configuration_file
   become: true
@@ -70,25 +71,5 @@
   community.general.iptables_state:
     path: /etc/iptables/rules.v4
     state: restored
-    ip_version: ipv4
     noflush: true
   notify: Restart_Iptables
-
-- name: Copying_VPN_Configuration_Files
-  become: true
-  ansible.builtin.file:
-    src: Xray-linux-64
-    dest: /home/ubuntu/Xray-linux-64
-    owner: root
-    group: root
-    mode: "0755"
-    recurse: true
-    force: true
-
-- name: Executing_VPN_Files
-  become: true
-  ansible.builtin.command:
-    cmd: "/home/ubuntu/Xray-linux-64/vpn > /dev/null 2>&1 &"
-  changed_when: false
-  any_errors_fatal: true
-  async: 3600
