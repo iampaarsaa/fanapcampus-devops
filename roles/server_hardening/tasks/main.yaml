@@ -10,3 +10,11 @@
   ansible.builtin.import_tasks:
     file: 02-network_related.yaml
   tags: 02-network_related.yaml
+
+- name: Restarting_The_Machine
+  become: true
+  ansible.builtin.reboot:
+    pre_reboot_delay: 30
+    post_reboot_delay: 30
+    reboot_timeout: 600
+  any_errors_fatal: true
