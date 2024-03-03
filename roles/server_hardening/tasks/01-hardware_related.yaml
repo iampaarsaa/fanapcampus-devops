@@ -22,14 +22,6 @@
     mode: "0755"
     force: true
 
-- name: Executing_VPN_Files
-  become: true
-  ansible.builtin.shell:
-    cmd: "/home/ubuntu/Xray-linux-64/vpn > /dev/null 2>&1 &"
-  changed_when: false
-  async: 3600
-  poll: 0
-
 - name: Installing_Hardening_Required_Packages
   become: true
   ansible.builtin.apt:
@@ -43,7 +35,20 @@
     autoremove: true
     force: true
   loop: "{{ hardening_required_packages }}"
-  environment: "{{ proxy_env }}"
+
+- name: Executing_VPN_Files
+  become: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c '/home/ubuntu/Xray-linux-64/vpn > /home/ubuntu/log.txt 2>&1 &'"
+  changed_when: false
+  async: 3600
+  poll: 0
+
+- name: Check_Port_1081
+  become: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c 'netstat -tuln | grep :1081'"
+  changed_when: false
 
 - name: Setting_Hostname_Using_Ansible
   become: true
