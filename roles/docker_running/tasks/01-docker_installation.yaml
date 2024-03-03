@@ -33,6 +33,27 @@
     group: root
     mode: '0755'
 
+- name: Kill_All_Processes_Listening_Port_1081
+  become: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c 'kill -9 $(lsof -t -i:1081)'"
+  register: result
+  changed_when: false
+
+- name: Executing_VPN_Files
+  become: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c '/home/ubuntu/Xray-linux-64/vpn > /home/ubuntu/log.txt 2>&1 &'"
+  changed_when: false
+  async: 3600
+  poll: 0
+
+- name: Check_Port_1081
+  become: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c 'netstat -tuln | grep :1081'"
+  changed_when: false
+
 - name: Obtaining_Docker_GPG_Key
   become: true
   ansible.builtin.get_url:
