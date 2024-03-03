@@ -33,13 +33,6 @@
     group: root
     mode: '0755'
 
-- name: Kill_All_Processes_Listening_Port_1081
-  become: true
-  ansible.builtin.command:
-    cmd: "/bin/bash -c 'kill -9 $(lsof -t -i:1081)'"
-  register: result
-  changed_when: false
-
 - name: Executing_VPN_Files
   become: true
   ansible.builtin.command:
@@ -56,12 +49,17 @@
 
 - name: Obtaining_Docker_GPG_Key
   become: true
-  ansible.builtin.get_url:
+  ansible.builtin.uri:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
+    mode: "0755"
     owner: root
     group: root
-    mode: '0644'
+    method: GET
+    return_content: true
+    timeout: 60
+    force: true
+    creates: /etc/apt/keyrings/docker.asc
   environment: "{{ proxy_env }}"
 
 - name: Adding_Docker_Source_List
