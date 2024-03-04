@@ -40,6 +40,26 @@
     mode: '0755'
     force: true
 
+- name: Creating_Docker_Registry_Directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/docker/registry
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Modifying_Docker_Registry_Config
+  become: true
+  ansible.builtin.template:
+    src: 02-registry_config.yml.j2
+    dest: /etc/docker/registry/config.yml
+    backup: true
+    owner: root
+    group: root
+    mode: '0755'
+    force: true
+
 - name: Adding_User_To_Docker_Group
   become: true
   ansible.builtin.command:
