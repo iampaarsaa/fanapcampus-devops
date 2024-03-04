@@ -25,3 +25,6 @@ hardening_required_packages:
   - iptables-persistent
   - libpwquality-common
   - cracklib-runtime
+  - apache2-utils
+  - python3-passlib
+  - certbot
