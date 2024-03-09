@@ -1,0 +1,18 @@
+---
+version: '3.8'
+
+networks:
+    reg-net:
+        name: reg-net
+        driver: bridge
+
+services:
+    registry:
+        image: registry:2
+        container_name: registry
+        volumes:
+            - /etc/nginx/data:/var/lib/registry
+            - /etc/docker/registry:/etc/docker/registry
+        networks:
+            - reg-net
+        restart: always
