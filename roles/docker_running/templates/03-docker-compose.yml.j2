@@ -5,9 +5,6 @@ networks:
     wp-net:
         name: wp-net
         driver: bridge
-    reg-net:
-        name: reg-net
-        driver: bridge
     db-net:
         name: db-net
         driver: bridge
@@ -50,18 +47,6 @@ services:
             WORDPRESS_DB_PASSWORD: byebye
         depends_on:
             - mysql
-
-    registry:
-        image: registry.mahmoudisari.ir/registry:2
-        container_name: registry
-        volumes:
-            - /etc/nginx/data:/var/lib/registry
-            - /etc/docker/registry:/etc/docker/registry
-        networks:
-            - reg-net
-        restart: always
-        depends_on:
-            - wordpress
 
     nginx:
         image: registry.mahmoudisari.ir/nginx:latest
