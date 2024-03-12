@@ -1,6 +1,7 @@
 ---
 - name: Creating_Registry_Userfile_Directory
   become: true
+  check_mode: true
   ansible.builtin.file:
     path: /etc/nginx/auth
     state: directory
@@ -10,6 +11,7 @@
 
 - name: Creating_Nginx_Data_Directory
   become: true
+  check_mode: true
   ansible.builtin.file:
     path: /etc/nginx/data
     state: directory
@@ -17,21 +19,9 @@
     group: root
     mode: '0755'
 
-- name: Updating_APT_Source_List_For_Htpasswd
-  become: true
-  ansible.builtin.apt:
-    update_cache: true
-    update_cache_retries: 3
-    cache_valid_time: 86400
-    autoclean: true
-    autoremove: true
-    force_apt_get: true
-    force: true
-    upgrade: safe
-    lock_timeout: 60
-
 - name: Creating_Registry_Userfile_Htpasswd
   become: true
+  check_mode: true
   community.general.htpasswd:
     path: /etc/nginx/auth/nginx.htpasswd
     owner: root
@@ -41,9 +31,9 @@
     name: parsa
     password: parsa
 
-
 - name: Creating_Docker_Compose_Directory
   become: true
+  check_mode: true
   ansible.builtin.file:
     path: /home/ubuntu/project
     state: directory
@@ -53,6 +43,7 @@
 
 - name: Modifying_Docker_Compose_File
   become: true
+  check_mode: true
   ansible.builtin.template:
     src: 03-docker-compose.yml.j2
     dest: /home/ubuntu/project/docker-compose.yml
@@ -64,9 +55,26 @@
 
 - name: Test_Docker_Compose_Configuration_File
   become: true
+  check_mode: false
+  ansible.builtin.command:
+    cmd: "/bin/bash -c 'cd /home/ubuntu/registry && docker compose config'"
+  changed_when: false
+  failed_when: false
+
+- name: Test_Docker_Compose_Configuration_File
+  become: true
+  check_mode: false
   ansible.builtin.command:
     cmd: "/bin/bash -c 'cd /home/ubuntu/project && docker compose config'"
   changed_when: false
+  failed_when: false
+
+- name: Replace registry-mirrors line
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/docker/daemon.json
+    regexp: '^(\s*)"registry-mirrors": \[.*\],'
+    line: '\g<1>"registry-mirrors": ["https://hub.hamdocker.ir"],'
 
 - name: Docker_Compose_Down_Prepairation
   become: true
@@ -84,3 +92,10 @@
     recreate: always
     dependencies: true
   environment: "{{ proxy_env }}"
+
+- name: Replace registry-mirrors line back to original
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/docker/daemon.json
+    regexp: '^(\s*)"registry-mirrors": \[.*\],'
+    line: '\g<1>"registry-mirrors": ["https://registry.mahmoudisari.ir"],'
