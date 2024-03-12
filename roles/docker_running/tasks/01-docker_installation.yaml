@@ -1,4 +1,14 @@
 ---
+- name: Obtaining_SSL_Certificate
+  become: true
+  check_mode: false
+  ansible.builtin.command:
+    cmd: "certbot certonly \
+      --standalone --noninteractive  \
+      --agree-tos -d wordpress.mahmoudisari.ir -d registry.mahmoudisari.ir \
+      --preferred-challenges http-01 --email iamapmas1382@outlook.com"
+  changed_when: false
+
 - name: Removing_Unofficial_Packages
   become: true
   check_mode: false
