@@ -8,6 +8,10 @@ networks:
     db-net:
         name: db-net
         driver: bridge
+    reg-net:
+        name: reg-net
+        driver: bridge
+
 volumes:
     wp-data:
         name: wp-data
@@ -17,6 +21,16 @@ volumes:
         driver: local
 
 services:
+    registry:
+        image: hub.hamdocker.ir/registry:2
+        container_name: registry
+        volumes:
+            - /etc/nginx/data:/var/lib/registry
+            - /etc/docker/registry:/etc/docker/registry
+        networks:
+            - reg-net
+        restart: always
+
     mysql:
         image: registry.mahmoudisari.ir/mysql:5.7
         container_name: mysql
@@ -31,6 +45,8 @@ services:
             MYSQL_DATABASE: devops
             MYSQL_USER: parsa
             MYSQL_PASSWORD: byebye
+        depends_on:
+            - registry
 
     wordpress:
         image: registry.mahmoudisari.ir/wordpress:latest
@@ -46,6 +62,7 @@ services:
             WORDPRESS_DB_NAME: devops
             WORDPRESS_DB_PASSWORD: byebye
         depends_on:
+            - registry
             - mysql
 
     nginx:
