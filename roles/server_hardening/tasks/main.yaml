@@ -13,6 +13,7 @@
 
 - name: Restarting_The_Machine
   become: true
+  check_mode: false
   ansible.builtin.reboot:
     pre_reboot_delay: 30
     post_reboot_delay: 30
