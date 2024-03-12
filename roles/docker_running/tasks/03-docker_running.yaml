@@ -1,7 +1,7 @@
 ---
 - name: Creating_Registry_Userfile_Directory
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.file:
     path: /etc/nginx/auth
     state: directory
@@ -11,7 +11,7 @@
 
 - name: Creating_Nginx_Data_Directory
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.file:
     path: /etc/nginx/data
     state: directory
@@ -33,7 +33,7 @@
 
 - name: Creating_Docker_Compose_Directory
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.file:
     path: /home/ubuntu/project
     state: directory
@@ -43,7 +43,7 @@
 
 - name: Modifying_Docker_Compose_File
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 03-docker-compose.yml.j2
     dest: /home/ubuntu/project/docker-compose.yml
@@ -69,15 +69,9 @@
   changed_when: false
   failed_when: false
 
-- name: Replace registry-mirrors line
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/docker/daemon.json
-    regexp: '^(\s*)"registry-mirrors": \[.*\],'
-    line: '\g<1>"registry-mirrors": ["https://hub.hamdocker.ir"],'
-
 - name: Docker_Compose_Down_Prepairation
   become: true
+  check_mode: false
   community.docker.docker_compose_v2:
     state: absent
     project_src: /home/ubuntu/project
@@ -85,6 +79,7 @@
     remove_orphans: true
 
 - name: Docker_Compose_Up_Execution
+  check_mode: false
   become: true
   community.docker.docker_compose_v2:
     project_src: /home/ubuntu/project
@@ -92,10 +87,3 @@
     recreate: always
     dependencies: true
   environment: "{{ proxy_env }}"
-
-- name: Replace registry-mirrors line back to original
-  become: true
-  ansible.builtin.lineinfile:
-    path: /etc/docker/daemon.json
-    regexp: '^(\s*)"registry-mirrors": \[.*\],'
-    line: '\g<1>"registry-mirrors": ["https://registry.mahmoudisari.ir"],'
