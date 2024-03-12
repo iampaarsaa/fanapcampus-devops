@@ -1,14 +1,12 @@
 ---
 - name: Server_hardening Tasks
   hosts: main
-  check_mode: false
   gather_facts: true
   roles:
     - { role: server_hardening, become: true, tags: server_hardening }
 
 - name: Docker_Running Tasks
   hosts: main
-  check_mode: false
   gather_facts: true
   roles:
     - { role: docker_running, become: true, tags: docker_running }
