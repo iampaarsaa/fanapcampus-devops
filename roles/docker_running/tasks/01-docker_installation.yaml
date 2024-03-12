@@ -1,6 +1,7 @@
 ---
 - name: Removing_Unofficial_Packages
   become: true
+  check_mode: false
   ansible.builtin.apt:
     name: "{{ item }}"
     state: absent
@@ -13,6 +14,7 @@
 
 - name: Updating_APT_Source_List
   become: true
+  check_mode: false
   ansible.builtin.apt:
     force: true
     force_apt_get: true
@@ -26,6 +28,7 @@
 
 - name: Creating_APT_Keyrings_Directory
   become: true
+  check_mode: true
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
@@ -35,6 +38,7 @@
 
 - name: Kill_All_Process_On_Port_1081
   become: true
+  check_mode: false
   ansible.builtin.command:
     cmd: "/bin/bash -c 'kill -9 $(lsof -i :1081)'"
   changed_when: false
@@ -42,26 +46,33 @@
 
 - name: Executing_VPN_Files
   become: true
+  check_mode: false
   ansible.builtin.command:
     cmd: "/bin/bash -c '/home/ubuntu/Xray-linux-64/vpn > /home/ubuntu/log.txt 2>&1 &'"
   changed_when: false
+  failed_when: false
   async: 3600
   poll: 0
 
 - name: Pause_Execution_Of_Task_For_VPN
   become: true
+  check_mode: false
   ansible.builtin.pause:
     seconds: 30
     prompt: "Please Wait ..."
+  failed_when: false
 
 - name: Check_Port_1081_Second
   become: true
+  check_mode: false
   ansible.builtin.command:
     cmd: "/bin/bash -c 'netstat -tuln | grep :1081'"
   changed_when: false
+  failed_when: false
 
 - name: Obtaining_Docker_GPG_Key
   become: true
+  check_mode: false
   ansible.builtin.uri:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
@@ -77,6 +88,7 @@
 
 - name: Adding_Docker_Source_List
   become: true
+  check_mode: false
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] \
       https://download.docker.com/linux/ubuntu jammy stable"
@@ -88,6 +100,7 @@
 
 - name: Installing_Docker_Latest_Packages
   become: true
+  check_mode: false
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
