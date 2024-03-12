@@ -59,7 +59,7 @@
 
 - name: Set_Timeout_Configurations
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 02-timeout.j2
     dest: /etc/profile.d/timeout-settings.sh
@@ -84,7 +84,7 @@
 
 - name: Making_SSHD_configuration_file
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 02-sshd_config.j2
     dest: /etc/ssh/sshd_config
@@ -97,7 +97,7 @@
 
 - name: Making_Iptables_Configuration_File
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 02-iptables.j2
     dest: /etc/iptables/rules.v4
