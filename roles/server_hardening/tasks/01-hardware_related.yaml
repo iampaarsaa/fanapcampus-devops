@@ -47,7 +47,7 @@
 
 - name: Modifying_etc_hosts
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-hostnames.j2
     dest: /etc/hosts
@@ -77,7 +77,7 @@
 
 - name: Modifying_Limits_Conf
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-limits.conf.j2
     dest: /etc/security/limits.conf
@@ -89,7 +89,7 @@
 
 - name: Modifying_Coredump_Conf
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-coredump.conf.j2
     dest: /etc/systemd/coredump.conf
@@ -101,7 +101,7 @@
 
 - name: Modifying_Systemd_Resolved_Conf
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-resolved.conf.j2
     dest: /etc/systemd/resolved.conf
@@ -115,7 +115,7 @@
 
 - name: Modifying_Etc_Resolv_Conf
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-resolv.conf.j2
     dest: /etc/resolv.conf
@@ -128,7 +128,7 @@
 
 - name: Modifying_Hosts_Allow_Conf
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-hosts.allow.j2
     dest: /etc/hosts.allow
@@ -140,7 +140,7 @@
 
 - name: Modifying_Hosts_Deny_Conf
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.template:
     src: 01-hosts.deny.j2
     dest: /etc/hosts.deny
