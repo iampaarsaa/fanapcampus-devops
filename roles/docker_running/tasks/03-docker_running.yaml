@@ -57,26 +57,19 @@
   become: true
   check_mode: false
   ansible.builtin.command:
-    cmd: "/bin/bash -c 'cd /home/ubuntu/registry && docker compose config'"
-  changed_when: false
-  failed_when: false
-
-- name: Test_Docker_Compose_Configuration_File
-  become: true
-  check_mode: false
-  ansible.builtin.command:
     cmd: "/bin/bash -c 'cd /home/ubuntu/project && docker compose config'"
   changed_when: false
   failed_when: false
 
-- name: Docker_Compose_Down_Prepairation
-  become: true
-  check_mode: false
-  community.docker.docker_compose_v2:
-    state: absent
-    project_src: /home/ubuntu/project
-    remove_volumes: true
-    remove_orphans: true
+# - name: Docker_Compose_Down_Prepairation
+#   become: true
+#   check_mode: false
+#   community.docker.docker_compose_v2:
+#     state: absent
+#     project_src: /home/ubuntu/project
+#     remove_volumes: true
+#     remove_orphans: true
+#   environment: "{{ proxy_env }}"
 
 - name: Docker_Compose_Up_Execution
   check_mode: false
