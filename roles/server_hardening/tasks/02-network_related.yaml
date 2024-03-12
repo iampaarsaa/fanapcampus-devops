@@ -51,24 +51,6 @@
     enabled: false
   failed_when: false
 
-- name: Allow incoming HTTP traffic
-  become: true
-  ansible.builtin.iptables:
-    chain: INPUT
-    protocol: tcp
-    destination_port: 80
-    jump: ACCEPT
-
-- name: Obtaining_SSL_Certificate
-  become: true
-  check_mode: false
-  ansible.builtin.command:
-    cmd: "certbot certonly \
-      --standalone --noninteractive  \
-      --agree-tos -d wordpress.mahmoudisari.ir -d registry.mahmoudisari.ir \
-      --preferred-challenges http-01 --email iamapmas1382@outlook.com"
-  changed_when: false
-
 - name: Set_Timezone_To_Asia/Tehran
   become: true
   community.general.timezone:
@@ -133,3 +115,4 @@
     state: restored
     noflush: true
   notify: Restart_Iptables
+
