@@ -109,10 +109,9 @@
 
 - name: Restoring_Iptables_State_From_File
   become: true
-  check_mode: true
+  check_mode: false
   community.general.iptables_state:
     path: /etc/iptables/rules.v4
     state: restored
     noflush: true
   notify: Restart_Iptables
-
