@@ -114,6 +114,16 @@
     mode: '0755'
     force: true
 
+- name: Creating_Docker_Compose_Directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: /home/ubuntu/project
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Modifying_Wordpress_Nginx_Configuration_Files
   become: true
   check_mode: false
