@@ -11,7 +11,7 @@ networks:
 
 services:
     registry:
-        image: hub.hamdocker.ir/registry:2
+        image: hub.hamdocker.ir/registry:latest
         container_name: registry
         volumes:
             - /etc/nginx/data:/var/lib/registry
