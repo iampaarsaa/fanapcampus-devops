@@ -102,12 +102,24 @@
     mode: '0755'
     state: directory
 
-- name: Modifying_Nginx_Configuration_Files
+- name: Modifying_Registry_Nginx_Configuration_Files
   become: true
   check_mode: false
   ansible.builtin.template:
     src: 02-registry_nginx.conf.j2
     dest: /etc/nginx/conf.d/registry_nginx.conf
+    backup: true
+    owner: root
+    group: root
+    mode: '0755'
+    force: true
+
+- name: Modifying_Wordpress_Nginx_Configuration_Files
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 02-wordpress_nginx.conf.j2
+    dest: /home/ubuntu/project/wordpress_nginx.conf
     backup: true
     owner: root
     group: root
