@@ -83,8 +83,7 @@
   changed_when: false
   failed_when: false
 
-
-- name: Test_Docker_Compose_Configuration_File
+- name: Test_Registry_Compose_Configuration_File
   become: true
   check_mode: false
   ansible.builtin.command:
@@ -92,7 +91,7 @@
   changed_when: false
   failed_when: false
 
-- name: Docker_Compose_Down_Prepairation
+- name: Registry_Compose_Down_Prepairation
   become: true
   check_mode: false
   community.docker.docker_compose_v2:
@@ -142,17 +141,13 @@
     state: present
     timeout: 60
 
-- name: Modifying_Nginx_Configuration_Files
+- name: Moving_Wordpress_Nginx_Config_To_Confd
   become: true
   check_mode: false
-  ansible.builtin.template:
-    src: 02-wordpress_nginx.conf.j2
-    dest: /etc/nginx/conf.d/wordpress_nginx.conf
-    backup: true
-    owner: root
-    group: root
-    mode: '0755'
-    force: true
+  ansible.builtin.command:
+    cmd: "/bin/bash -c 'mv /home/ubuntu/project/wordpress_nginx.conf \
+     /etc/nginx/conf.d/wordpress_nginx.conf'"
+  changed_when: false
 
 - name: Restarting_Nginx_Container
   become: true
