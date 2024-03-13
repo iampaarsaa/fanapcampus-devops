@@ -92,25 +92,27 @@
   changed_when: false
   failed_when: false
 
-- name: Docker_Compose_Down_Prepairation
-  become: true
-  check_mode: false
-  community.docker.docker_compose_v2:
-    state: absent
-    project_src: /home/ubuntu/project
-    remove_volumes: true
-    remove_orphans: true
-  environment: "{{ proxy_env }}"
+# - name: Docker_Compose_Down_Prepairation
+#   become: true
+#   check_mode: false
+#   community.docker.docker_compose_v2:
+#     state: absent
+#     project_src: /home/ubuntu/project
+#     remove_volumes: true
+#     remove_orphans: true
+#   environment: "{{ proxy_env }}"
+#   failed_when: true
 
-- name: Docker_Compose_Down_Prepairation
-  become: true
-  check_mode: false
-  community.docker.docker_compose_v2:
-    state: absent
-    project_src: /home/ubuntu/registry
-    remove_volumes: true
-    remove_orphans: true
-  environment: "{{ proxy_env }}"
+# - name: Docker_Compose_Down_Prepairation
+#   become: true
+#   check_mode: false
+#   community.docker.docker_compose_v2:
+#     state: absent
+#     project_src: /home/ubuntu/registry
+#     remove_volumes: true
+#     remove_orphans: true
+#   environment: "{{ proxy_env }}"
+#   failed_when: true
 
 - name: Docker_Compose_Up_Execution
   check_mode: false
