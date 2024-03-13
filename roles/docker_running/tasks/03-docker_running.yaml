@@ -92,27 +92,27 @@
   changed_when: false
   failed_when: false
 
-# - name: Docker_Compose_Down_Prepairation
-#   become: true
-#   check_mode: false
-#   community.docker.docker_compose_v2:
-#     state: absent
-#     project_src: /home/ubuntu/project
-#     remove_volumes: true
-#     remove_orphans: true
-#   environment: "{{ proxy_env }}"
-#   failed_when: true
+- name: Docker_Compose_Down_Prepairation
+  become: true
+  check_mode: false
+  community.docker.docker_compose_v2:
+    state: absent
+    project_src: /home/ubuntu/registry
+    remove_volumes: true
+    remove_orphans: true
+  environment: "{{ proxy_env }}"
+  failed_when: false
 
-# - name: Docker_Compose_Down_Prepairation
-#   become: true
-#   check_mode: false
-#   community.docker.docker_compose_v2:
-#     state: absent
-#     project_src: /home/ubuntu/registry
-#     remove_volumes: true
-#     remove_orphans: true
-#   environment: "{{ proxy_env }}"
-#   failed_when: true
+- name: Docker_Compose_Down_Prepairation
+  become: true
+  check_mode: false
+  community.docker.docker_compose_v2:
+    state: absent
+    project_src: /home/ubuntu/project
+    remove_volumes: true
+    remove_orphans: true
+  environment: "{{ proxy_env }}"
+  failed_when: false
 
 - name: Docker_Compose_Up_Execution
   check_mode: false
@@ -141,6 +141,26 @@
     password: parsa
     state: present
     timeout: 60
+
+- name: Modifying_Nginx_Configuration_Files
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 02-wordpress_nginx.conf.j2
+    dest: /etc/nginx/conf.d/wordpress_nginx.conf
+    backup: true
+    owner: root
+    group: root
+    mode: '0755'
+    force: true
+
+- name: Restarting_Nginx_Container
+  become: true
+  check_mode: false
+  community.docker.docker_container:
+    name: nginx
+    state: started
+    restart: true
 
 - name: Docker_Compose_Up_Execution
   check_mode: false
