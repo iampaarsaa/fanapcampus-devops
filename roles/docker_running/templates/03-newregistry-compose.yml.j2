@@ -1,0 +1,34 @@
+---
+version: '3.8'
+
+networks:
+    reg-net:
+        name: reg-net
+        driver: bridge
+
+services:
+    registry:
+        image: hub.hamdocker.ir/registry:2
+        container_name: registry
+        volumes:
+            - /etc/nginx/data:/var/lib/registry
+            - /etc/docker/registry:/etc/docker/registry
+        networks:
+            - reg-net
+        restart: always
+    nginx:
+        image: hub.hamdocker.ir/nginx:latest
+        container_name: nginx
+        volumes:
+            - /etc/nginx/conf.d:/etc/nginx/conf.d
+            - /etc/nginx/auth:/etc/nginx/auth
+            - /etc/letsencrypt/live/wordpress.mahmoudisari.ir:/etc/letsencrypt/live/wordpress.mahmoudisari.ir
+            - /etc/letsencrypt/archive/wordpress.mahmoudisari.ir:/etc/letsencrypt/archive/wordpress.mahmoudisari.ir
+        networks:
+            - wp-net
+            - reg-net
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - registry
