@@ -33,9 +33,6 @@ services:
             MYSQL_DATABASE: devops
             MYSQL_USER: parsa
             MYSQL_PASSWORD: byebye
-        depends_on:
-            - registry
-            - nginx
 
     wordpress:
         image: registry.mahmoudisari.ir/wordpress:latest
@@ -51,6 +48,4 @@ services:
             WORDPRESS_DB_NAME: devops
             WORDPRESS_DB_PASSWORD: byebye
         depends_on:
-            - registry
             - mysql
-            - nginx
