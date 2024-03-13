@@ -41,7 +41,7 @@
 
 - name: Setting_Hostname_Using_Ansible
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
 
@@ -59,14 +59,14 @@
 
 - name: Removing_TMP_Directory_From_Fstab
   become: true
-  check_mode: true
+  check_mode: false
   ansible.posix.mount:
     path: /tmp
     state: absent
 
 - name: Removing_Floppy_From_Fstab
   become: true
-  check_mode: true
+  check_mode: false
   ansible.builtin.lineinfile:
     path: /etc/fstab
     owner: root
