@@ -122,6 +122,24 @@
     dependencies: true
   environment: "{{ proxy_env }}"
 
+- name: Pause_Execution_Of_Task_Before_DockerLogin
+  become: true
+  check_mode: false
+  ansible.builtin.pause:
+    seconds: 30
+    prompt: "Please Wait ..."
+  failed_when: false
+
+- name: Docker_Registry_Login
+  become: true
+  check_mode: false
+  community.docker.docker_login:
+    registry_url: https://registry.mahmoudisari.ir
+    username: parsa
+    password: parsa
+    state: present
+    timeout: 60
+
 - name: Docker_Compose_Up_Execution
   check_mode: false
   become: true
