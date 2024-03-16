@@ -3,6 +3,6 @@ all:
     main:
       hosts:
         docker:
-          ansible_host: 5.34.196.186
+          ansible_host: 188.121.104.199
           ansible_user: ubuntu
           ansible_port: 22
