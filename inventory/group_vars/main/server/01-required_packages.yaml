@@ -28,3 +28,4 @@ hardening_required_packages:
   - apache2-utils
   - python3-passlib
   - certbot
+  - auditd
