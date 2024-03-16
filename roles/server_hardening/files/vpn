@@ -1,0 +1,2 @@
+#!/bin/bash
+/home/amirparsa/Downloads/Xray-linux-64/xray -c /home/amirparsa/Desktop/vless1.json
