@@ -21,3 +21,15 @@
   ansible.builtin.service:
     name: iptables
     state: restarted
+
+- name: Restart_Auditd
+  become: true
+  ansible.builtin.service:
+    name: auditd
+    state: restarted
+
+- name: Generate_Auditd
+  become: true
+  ansible.builtin.command:
+    cmd: "augenrules"
+  changed_when: false
