@@ -37,3 +37,48 @@
   notify:
     - Generate_Auditd
     - Restart_Auditd
+
+- name: Modifying_Jounald_Conf_File
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 03-jounald.conf.j2
+    dest: /etc/systemd/journald.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+
+- name: Modifying_Logrotate_Conf_File
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 03-logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+
+- name: Cron.daily_logrotate
+  become: true
+  ansible.builtin.lineinfile:
+    line: "/usr/sbin/logrotate /etc/logrotate.conf"
+    dest: /etc/cron.daily/logrotate
+    mode: "0750"
+    state: present
+    create: true
+
+- name: Modifying_rsyslog_Conf_File
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 03-rsyslog.conf.j2
+    dest: /etc/logrotate.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0640"
+    force: true
