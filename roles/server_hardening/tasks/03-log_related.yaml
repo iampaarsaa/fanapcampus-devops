@@ -1,0 +1,39 @@
+---
+- name: Set_Debian_audit_grub_cmdline
+  become: true
+  ansible.builtin.lineinfile:
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX audit=1 audit_backlog_limit=8192'
+    dest: /etc/default/grub.d/99-hardening-audit.cfg
+    state: present
+    create: true
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Modifying_Auditd_Conf_File
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 03-auditd.conf.j2
+    dest: /etc/audit/auditd.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+
+
+- name: Modifying_Auditd_Rules_File
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 03-hardening.rules.j2
+    dest: /etc/audit/rules.d/hardening.rules
+    backup: true
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+  notify:
+    - Generate_Auditd
+    - Restart_Auditd
