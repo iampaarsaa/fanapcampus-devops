@@ -6,9 +6,6 @@ networks:
         name: wp-net
         driver: bridge
         external: true
-    db-net:
-        name: db-net
-        driver: bridge
 
 volumes:
     wp-data:
@@ -20,13 +17,12 @@ volumes:
 
 services:
     mysql:
-        image: registry.mahmoudisari.ir/mysql:5.7
+        image: registry.mahmoudisari.ir/mysql:latest
         container_name: mysql
         volumes:
             - db-data:/var/lib/mysql
         networks:
             - wp-net
-            - db-net
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: salamsalam
