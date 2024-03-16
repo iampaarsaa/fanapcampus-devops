@@ -13,16 +13,36 @@
     autoremove: true
     lock_timeout: 60
 
-- name: Copying_VPN_Configuration_Directory
+- name: Downloading_Xray_Linux_64bit_Release
   become: true
   check_mode: false
-  ansible.builtin.copy:
-    src: Xray-linux-64
-    dest: /home/ubuntu
+  ansible.builtin.uri:
+    url: https://github.com/XTLS/Xray-core/releases/download/v1.8.9/Xray-linux-64.zip
     owner: ubuntu
     group: ubuntu
     mode: "0755"
+    dest: /home/ubuntu
+    method: GET
     force: true
+
+- name: Creating_Xray_Directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: /home/ubuntu/Xray-linux-64
+    owner: ubuntu
+    group: ubuntu
+    mode: "0755"
+    recurse: true
+    state: directory
+
+- name: Extracting_Xray_Linux_64Bit_Release
+  become: true
+  check_mode: false
+  ansible.builtin.unarchive:
+    src: /home/ubuntu/Xray-linux-64.zip
+    dest: /home/ubuntu/Xray-linux-64
+    remote_src: true
 
 - name: Installing_Hardening_Required_Packages
   become: true
