@@ -1,4 +1,26 @@
 ---
+- name: Moving_Vless_Json_Config
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: 02-vless.json.j2
+    dest: /home/ubuntu/Xray-linux-64/vless1.json
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+    force: true
+
+- name: Moving_Vpn_Script_File
+  become: true
+  check_mode: false
+  ansible.builtin.copy:
+    src: vpn
+    dest: /home/ubuntu/Xray-linux-64/vpn
+    owner: root
+    group: root
+    mode: "0755"
+    force: true
+
 - name: Kill_All_Process_On_Port_1081
   become: true
   check_mode: false
@@ -32,6 +54,21 @@
     cmd: "/bin/bash -c 'netstat -tuln | grep :1081'"
   changed_when: false
   failed_when: false
+
+- name: Add_Br_Netfilter_Module
+  community.general.modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Change_Various_Sysctl_Settings
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    state: present
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/MeCan.conf
+    reload: true
+    ignoreerrors: true
+  with_dict: '{{ sysctl_config }}'
 
 - name: Stop_And_Disable_UFW
   become: true
