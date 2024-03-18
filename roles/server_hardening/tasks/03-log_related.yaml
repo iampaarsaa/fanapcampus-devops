@@ -1,6 +1,7 @@
 ---
 - name: Set_Debian_audit_grub_cmdline
   become: true
+  check_mode: false
   ansible.builtin.lineinfile:
     line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX audit=1 audit_backlog_limit=8192'
     dest: /etc/default/grub.d/99-hardening-audit.cfg
@@ -42,7 +43,7 @@
   become: true
   check_mode: false
   ansible.builtin.template:
-    src: 03-jounald.conf.j2
+    src: 03-journald.conf.j2
     dest: /etc/systemd/journald.conf
     backup: true
     owner: root
@@ -64,6 +65,7 @@
 
 - name: Cron.daily_logrotate
   become: true
+  check_mode: false
   ansible.builtin.lineinfile:
     line: "/usr/sbin/logrotate /etc/logrotate.conf"
     dest: /etc/cron.daily/logrotate
