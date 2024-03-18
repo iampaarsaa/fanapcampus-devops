@@ -5,9 +5,9 @@
   ansible.builtin.template:
     src: 02-vless.json.j2
     dest: /home/ubuntu/Xray-linux-64/vless1.json
-    owner: ubuntu
-    group: ubuntu
-    mode: "0644"
+    owner: root
+    group: root
+    mode: "0755"
     force: true
 
 - name: Moving_Vpn_Script_File
@@ -29,7 +29,7 @@
   changed_when: false
   failed_when: false
 
-- name: Executing_VPN_Files
+- name: Executing_VPN_Files_Seconds
   become: true
   check_mode: false
   ansible.builtin.command:
@@ -55,20 +55,20 @@
   changed_when: false
   failed_when: false
 
-- name: Add_Br_Netfilter_Module
-  community.general.modprobe:
-    name: br_netfilter
-    state: present
+# - name: Add_Br_Netfilter_Module
+#   community.general.modprobe:
+#     name: br_netfilter
+#     state: present
 
-- name: Change_Various_Sysctl_Settings
-  ansible.posix.sysctl:
-    name: "{{ item.key }}"
-    state: present
-    value: "{{ item.value }}"
-    sysctl_file: /etc/sysctl.d/MeCan.conf
-    reload: true
-    ignoreerrors: true
-  with_dict: '{{ sysctl_config }}'
+# - name: Change_Various_Sysctl_Settings
+#   ansible.posix.sysctl:
+#     name: "{{ item.key }}"
+#     state: present
+#     value: "{{ item.value }}"
+#     sysctl_file: /etc/sysctl.d/MeCan.conf
+#     reload: true
+#     ignoreerrors: true
+#   with_dict: '{{ sysctl_config }}'
 
 - name: Stop_And_Disable_UFW
   become: true
@@ -90,6 +90,7 @@
 
 - name: Set_Timezone_To_Asia/Tehran
   become: true
+  check_mode: false
   community.general.timezone:
     name: Asia/Tehran
   notify: Restart_NTP
