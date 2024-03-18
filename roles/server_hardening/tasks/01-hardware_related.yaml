@@ -30,19 +30,11 @@
   check_mode: false
   ansible.builtin.file:
     path: /home/ubuntu/Xray-linux-64
-    owner: ubuntu
-    group: ubuntu
+    owner: root
+    group: root
     mode: "0755"
     recurse: true
     state: directory
-
-- name: Extracting_Xray_Linux_64Bit_Release
-  become: true
-  check_mode: false
-  ansible.builtin.unarchive:
-    src: /home/ubuntu/Xray-linux-64.zip
-    dest: /home/ubuntu/Xray-linux-64
-    remote_src: true
 
 - name: Installing_Hardening_Required_Packages
   become: true
@@ -58,6 +50,17 @@
     autoremove: true
     force: true
   loop: "{{ hardening_required_packages }}"
+
+- name: Extracting_Xray_Linux_64Bit_Release
+  become: true
+  check_mode: false
+  ansible.builtin.unarchive:
+    src: /home/ubuntu/Xray-linux-64.zip
+    dest: /home/ubuntu/Xray-linux-64
+    remote_src: true
+    mode: "0755"
+    owner: root
+    group: root
 
 - name: Setting_Hostname_Using_Ansible
   become: true
