@@ -4,6 +4,7 @@ This Ansible project automates the process of server hardening followed by setti
 
 ## Requirements
 - Ansible installed on the controller node(s)
+- Install [community.docker.docker_compose_v2 module](https://docs.ansible.com/ansible/latest/collections/community/docker/docker_compose_v2_module.html#ansible-collections-community-docker-docker-compose-v2-module)
 
 ## Execution Steps
 1. **Server Hardening:**
