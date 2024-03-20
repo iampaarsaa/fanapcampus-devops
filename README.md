@@ -24,8 +24,9 @@ This Ansible project automates the process of server hardening followed by setti
 ## Usage
 1. Ensure Ansible is installed on your controller node(s).
 2. Clone this repository to your local machine.
-3. Modify the Ansible playbook and inventory files according to your server configurations.
-4. Run the Ansible playbook:
+3. Put the Vault's password in [.secrets](.secrets) file
+4. Modify the Ansible playbook and inventory files according to your server configurations.
+5. Run the Ansible playbook:
     ```bash
     ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory/hosts.yaml playbook.yaml
     ```
@@ -33,4 +34,3 @@ This Ansible project automates the process of server hardening followed by setti
 ## Note
 - Make sure to adjust playbook and inventory files as per your environment setup.
 - Ensure proper network configurations to access the private cached registries.
-
