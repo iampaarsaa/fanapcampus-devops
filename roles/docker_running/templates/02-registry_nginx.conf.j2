@@ -8,10 +8,10 @@ map $upstream_http_docker_distribution_api_version $docker_distribution_api_vers
 
 server {
     listen 443 ssl;
-    server_name registry.mahmoudisari.ir;
+    server_name reg.mahmoudisari.ir;
 
-    ssl_certificate /etc/letsencrypt/live/wordpress.mahmoudisari.ir/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/wordpress.mahmoudisari.ir/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/wp.mahmoudisari.ir/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/wp.mahmoudisari.ir/privkey.pem;
 
     client_max_body_size 0;
 
@@ -45,6 +45,6 @@ server {
 
 server {
     listen 80;
-    server_name registry.mahmoudisari.ir;
+    server_name reg.mahmoudisari.ir;
     return 301 https://$host$request_uri;
 }
