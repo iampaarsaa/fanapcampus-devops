@@ -5,8 +5,8 @@
   ansible.builtin.command:
     cmd: "certbot certonly \
       --standalone --noninteractive  \
-      --agree-tos -d wordpress.mahmoudisari.ir -d registry.mahmoudisari.ir \
-      --preferred-challenges http-01 --email iamapmas1382@outlook.com"
+      --agree-tos -d wp.mahmoudisari.ir -d reg.mahmoudisari.ir \
+      --preferred-challenges http-01 --email apms1382@gmail.com"
   changed_when: false
 
 - name: Removing_Unofficial_Packages
