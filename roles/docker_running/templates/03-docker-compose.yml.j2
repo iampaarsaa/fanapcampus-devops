@@ -17,7 +17,7 @@ volumes:
 
 services:
     mysql:
-        image: registry.mahmoudisari.ir/mysql:latest
+        image: reg.mahmoudisari.ir/mysql:latest
         container_name: mysql
         volumes:
             - db-data:/var/lib/mysql
@@ -31,7 +31,7 @@ services:
             MYSQL_PASSWORD: byebye
 
     wordpress:
-        image: registry.mahmoudisari.ir/wordpress:latest
+        image: reg.mahmoudisari.ir/wordpress:latest
         container_name: wordpress
         volumes:
             - wp-data:/var/www/html
