@@ -133,7 +133,7 @@
   become: true
   check_mode: false
   community.docker.docker_login:
-    registry_url: https://registry.mahmoudisari.ir
+    registry_url: https://reg.mahmoudisari.ir
     username: parsa
     password: parsa
     state: present
