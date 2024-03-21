@@ -25,8 +25,8 @@ services:
         volumes:
             - /etc/nginx/conf.d:/etc/nginx/conf.d
             - /etc/nginx/auth:/etc/nginx/auth
-            - /etc/letsencrypt/live/wordpress.mahmoudisari.ir:/etc/letsencrypt/live/wordpress.mahmoudisari.ir
-            - /etc/letsencrypt/archive/wordpress.mahmoudisari.ir:/etc/letsencrypt/archive/wordpress.mahmoudisari.ir
+            - /etc/letsencrypt/live/wp.mahmoudisari.ir:/etc/letsencrypt/live/wp.mahmoudisari.ir
+            - /etc/letsencrypt/archive/wp.mahmoudisari.ir:/etc/letsencrypt/archive/wp.mahmoudisari.ir
         networks:
             - wp-net
             - reg-net
