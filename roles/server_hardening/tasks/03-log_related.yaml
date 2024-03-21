@@ -3,7 +3,7 @@
   become: true
   check_mode: false
   ansible.builtin.lineinfile:
-    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX audit=1 audit_backlog_limit=8192'
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX audit=1 audit_backlog_limit=8192"'
     dest: /etc/default/grub.d/99-hardening-audit.cfg
     state: present
     create: true
