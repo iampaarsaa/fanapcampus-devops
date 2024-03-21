@@ -19,8 +19,8 @@ This Ansible project automates the process of server hardening followed by setti
     - Obtain Docker images of MySQL and WordPress from the cache private registry.
 
 4. **Private Cached Registries:**
-    - Registry URL: registry.mahmoudisari.ir
-    - WordPress URL: wordpress.mahmoudisari.ir
+    - Registry URL: reg.mahmoudisari.ir
+    - WordPress URL: wp.mahmoudisari.ir
 
 ## Usage
 1. Ensure Ansible is installed on your controller node(s).
