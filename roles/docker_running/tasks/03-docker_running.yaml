@@ -157,14 +157,14 @@
      /etc/nginx/conf.d/wordpress_nginx.conf'"
   changed_when: false
 
-- name: Restarting_The_Machine
-  become: true
-  check_mode: false
-  ansible.builtin.reboot:
-    pre_reboot_delay: 30
-    post_reboot_delay: 30
-    reboot_timeout: 600
-  any_errors_fatal: true
+# - name: Restarting_The_Machine
+#   become: true
+#   check_mode: false
+#   ansible.builtin.reboot:
+#     pre_reboot_delay: 30
+#     post_reboot_delay: 30
+#     reboot_timeout: 600
+#   any_errors_fatal: true
 
 - name: Restarting_Nginx_Container
   become: true
