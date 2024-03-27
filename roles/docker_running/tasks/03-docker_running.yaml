@@ -81,27 +81,27 @@
   changed_when: false
   failed_when: false
 
-- name: Registry_Compose_Down_Prepairation
-  become: true
-  check_mode: false
-  community.docker.docker_compose_v2:
-    state: absent
-    project_src: /home/ubuntu/registry
-    remove_volumes: true
-    remove_orphans: true
-  environment: "{{ proxy_env }}"
-  failed_when: false
+# - name: Registry_Compose_Down_Prepairation
+#   become: true
+#   check_mode: false
+#   community.docker.docker_compose_v2:
+#     state: absent
+#     project_src: /home/ubuntu/registry
+#     remove_volumes: true
+#     remove_orphans: true
+#   environment: "{{ proxy_env }}"
+#   failed_when: false
 
-- name: Docker_Compose_Down_Prepairation
-  become: true
-  check_mode: false
-  community.docker.docker_compose_v2:
-    state: absent
-    project_src: /home/ubuntu/project
-    remove_volumes: true
-    remove_orphans: true
-  environment: "{{ proxy_env }}"
-  failed_when: false
+# - name: Docker_Compose_Down_Prepairation
+#   become: true
+#   check_mode: false
+#   community.docker.docker_compose_v2:
+#     state: absent
+#     project_src: /home/ubuntu/project
+#     remove_volumes: true
+#     remove_orphans: true
+#   environment: "{{ proxy_env }}"
+#   failed_when: false
 
 - name: Removing_Wordpress_Nginx_Config_Confd
   become: true
@@ -157,15 +157,6 @@
      /etc/nginx/conf.d/wordpress_nginx.conf'"
   changed_when: false
 
-# - name: Restarting_The_Machine
-#   become: true
-#   check_mode: false
-#   ansible.builtin.reboot:
-#     pre_reboot_delay: 30
-#     post_reboot_delay: 30
-#     reboot_timeout: 600
-#   any_errors_fatal: true
-
 - name: Restarting_Nginx_Container
   become: true
   check_mode: false
@@ -173,3 +164,11 @@
     name: nginx
     state: started
     restart: true
+
+- name: Pause_Execution_Of_Task_For_Containers
+  become: true
+  check_mode: false
+  ansible.builtin.pause:
+    seconds: 180
+    prompt: "Please Wait ..."
+  failed_when: false
