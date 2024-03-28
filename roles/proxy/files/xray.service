@@ -1,0 +1,15 @@
+[Unit]
+Description=Xray Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/xray/xray -c /etc/xray/config.json
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
+User=xray
+Group=xray
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,32 @@
+---
+- name: Update and upgrade apt packages
+  become: true
+  check_mode: false
+  ansible.builtin.apt:
+    upgrade: safe
+    update_cache: true
+    update_cache_retries: 3
+    cache_valid_time: 86400
+    autoclean: true
+    autoremove: true
+    lock_timeout: 60
+
+- name: Install common packages
+  become: true
+  check_mode: false
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    update_cache_retries: 3
+    lock_timeout: 60
+    autoclean: true
+    autoremove: true
+  loop: "{{ packages }}"
+
+- name: Set timezone to Asia/Tehran
+  become: true
+  check_mode: false
+  community.general.timezone:
+    name: Asia/Tehran
+  notify: Restart ntp service

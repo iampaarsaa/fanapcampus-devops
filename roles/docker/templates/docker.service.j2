@@ -1,0 +1,6 @@
+{% if docker.proxy is defined %}
+[Service]
+Environment="HTTP_PROXY={{ docker.proxy.http_proxy }}"
+Environment="HTTPS_PROXY={{ docker.proxy.http_proxy }}"
+Environment="NO_PROXY={{ docker.proxy.no_proxy}}"
+{% endif %}

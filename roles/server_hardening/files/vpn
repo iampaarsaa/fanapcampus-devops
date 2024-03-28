@@ -1,2 +1,0 @@
-#!/bin/bash
-/home/ubuntu/Xray-linux-64/xray -c /home/ubuntu/Xray-linux-64/vless1.json

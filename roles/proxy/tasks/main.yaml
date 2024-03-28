@@ -1,0 +1,55 @@
+- name: Download xray
+  become: true
+  check_mode: false
+  ansible.builtin.uri:
+    method: GET
+    url: https://github.com/XTLS/Xray-core/releases/download/v1.8.9/Xray-linux-64.zip
+    dest: /tmp
+
+- name: Create xray user
+  ansible.builtin.user:
+    name: xray
+    shell: /bin/bash
+    createhome: false
+
+- name: Create xray directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: /etc/xray
+    owner: xray
+    group: xray
+    recurse: true
+    state: directory
+
+- name: Extract xray
+  become: true
+  check_mode: false
+  ansible.builtin.unarchive:
+    src: /tmp/Xray-linux-64.zip
+    dest: /etc/xray
+    remote_src: true
+    owner: xray
+    group: xray
+
+- name: Copy Xray config
+  become: true
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: /etc/xray/config.json
+    owner: xray
+    group: xray
+    mode: "0644"
+
+- name: Copy Xray service file
+  become: true
+  ansible.builtin.copy:
+    src: xray.service
+    dest: /etc/systemd/system/xray.service
+    mode: "0644"
+
+- name: Start and enable Xray service
+  ansible.builtin.service:
+    name: xray
+    state: started
+    enabled: true

@@ -1,0 +1,38 @@
+---
+networks:
+    webserver:
+        external: true
+
+services:
+    mysql:
+        image: {{ registry.domain }}/mysql:8.0
+        container_name: mysql
+        volumes:
+            - db-data:/var/lib/mysql
+        networks:
+            - webserver
+        restart: on-failure:3
+        environment:
+            MYSQL_ROOT_PASSWORD: {{ wordpress_db_root_password }}
+            MYSQL_DATABASE: {{ wordpress.db_name }}
+            MYSQL_USER: {{ wordpress.db_user }}
+            MYSQL_PASSWORD: {{ wordpress_db_password }}
+
+    wordpress:
+        image: {{ registry.domain }}/wordpress:6-php8.1-fpm
+        container_name: wordpress
+        volumes:
+            - wp-data:/var/www/html
+        networks:
+            - webserver
+        restart: always
+        environment:
+            WORDPRESS_DB_HOST: mysql:3306
+            WORDPRESS_DB_USER: {{ wordpress.db_user }}
+            WORDPRESS_DB_NAME: {{ wordpress.db_name }}
+            WORDPRESS_DB_PASSWORD: {{ wordpress_db_password }}
+        depends_on:
+            - mysql
+volumes:
+    wp-data:
+    db-data:

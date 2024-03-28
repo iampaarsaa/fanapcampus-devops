@@ -1,0 +1,53 @@
+- name: Stop and disable UFW
+  become: true
+  check_mode: false
+  ansible.builtin.service:
+    name: ufw
+    state: stopped
+    enabled: false
+  failed_when: false
+
+- name: Stop and disable Postfix
+  become: true
+  check_mode: false
+  ansible.builtin.service:
+    name: postfix
+    state: stopped
+    enabled: false
+  failed_when: false
+
+- name: Copy iptables rules
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: iptables.j2
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: "0755"
+    backup: true
+    force: true
+
+- name: Restore iptables from rules
+  become: true
+  check_mode: false
+  community.general.iptables_state:
+    path: /etc/iptables/rules.v4
+    state: restored
+    noflush: true
+  notify: Restart iptables service
+# - name: Set hosts.allow
+#   become: true
+#   check_mode: false
+#   ansible.builtin.template:
+#     src: hosts.allow.j2
+#     dest: /etc/hosts.allow
+#     backup: true
+
+# - name: Set hosts.deny
+#   become: true
+#   check_mode: false
+#   ansible.builtin.template:
+#     src: hosts.deny.j2
+#     dest: /etc/hosts.deny
+#     backup: true

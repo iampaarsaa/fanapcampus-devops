@@ -1,0 +1,32 @@
+- name: Create certificates directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: /etc/certs/{{ root_domain }}
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+    recurse: true
+  tags: ssl
+
+- name: Add private key
+  become: true
+  ansible.builtin.template:
+    src: privkey.pem.j2
+    dest: "/etc/certs/{{ root_domain }}/privkey.pem"
+    owner: root
+    group: root
+    mode: "0644"
+  tags: ssl
+
+- name: Add full-chain certificate
+  become: true
+  check_mode: false
+  ansible.builtin.copy:
+    src: fullchain.pem
+    dest: "/etc/certs/{{ root_domain }}/fullchain.pem"
+    owner: root
+    group: root
+    mode: "0644"
+  tags: ssl

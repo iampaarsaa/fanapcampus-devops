@@ -1,0 +1,6 @@
+---
+wordpress:
+  root: /etc/wordpress
+  domain: "wp.{{ root_domain }}"
+  db_name: wordpress
+  db_user: parsa

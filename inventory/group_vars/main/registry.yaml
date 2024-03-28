@@ -1,0 +1,5 @@
+registry:
+  domain: "reg.{{ root_domain }}"
+  user: parsa
+  root: /etc/registry/
+  data: /etc/registry/data

@@ -1,0 +1,34 @@
+- name: Copy SSH banner
+  become: true
+  check_mode: false
+  ansible.builtin.copy:
+    src: ssh_banner
+    dest: /etc/issue
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+  failed_when: false
+
+- name: Configure sshd
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  notify: Restart ssh service
+
+- name: Set user shell timeout
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: profiled_timeout.j2
+    dest: /etc/profile.d/timeout-settings.sh
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true

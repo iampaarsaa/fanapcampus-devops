@@ -1,0 +1,21 @@
+- name: Set resource limits
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: limits.conf.j2
+    dest: /etc/security/limits.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Disable potentially resource consuming systemd-coredump
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: coredump.conf.j2
+    dest: /etc/systemd/coredump.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"

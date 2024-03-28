@@ -1,12 +1,21 @@
 ---
-- name: Server_hardening Tasks
+- name: Prepare Server
   hosts: main
   gather_facts: true
   roles:
-    - { role: server_hardening, become: true, tags: server_hardening }
+    - { role: prepare, become: true }
+    - { role: proxy, become: true }
+    - { role: certificates, become: true }
 
-- name: Docker_Running Tasks
+- name: Setup Docker registry
   hosts: main
   gather_facts: true
   roles:
-    - { role: docker_running, become: true, tags: docker_running }
+    - { role: docker, become: true }
+    - { role: registry, become: true }
+
+- name: Setup Wordpress
+  hosts: main
+  gather_facts: true
+  roles:
+    - { role: wordpress, become: true }

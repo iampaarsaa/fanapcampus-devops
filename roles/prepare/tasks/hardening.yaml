@@ -1,0 +1,30 @@
+---
+- name: Configure sshd
+  become: true
+  ansible.builtin.import_tasks:
+    file: sshd.yaml
+  tags: [hardening, ssh]
+
+- name: Configure firewall
+  become: true
+  ansible.builtin.import_tasks:
+    file: firewall.yaml
+  tags: [hardening, firewall]
+
+- name: Limit resource usage
+  become: true
+  ansible.builtin.import_tasks:
+    file: tuning.yaml
+  tags: [hardening, tuning]
+
+- name: Make fstab secure
+  become: true
+  ansible.builtin.import_tasks:
+    file: fstab.yaml
+  tags: [hardening, fstab]
+
+- name: Configure logs (auditd, journald, rsyslog, etc)
+  become: true
+  ansible.builtin.import_tasks:
+    file: log.yaml
+  tags: [hardening, log]
