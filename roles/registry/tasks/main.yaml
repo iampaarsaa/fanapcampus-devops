@@ -40,7 +40,7 @@
   community.general.htpasswd:
     path: "{{ registry.root }}/nginx.htpasswd"
     state: present
-    mode: "0640"
+    mode: "0644"
     name: "{{ registry.user }}"
     password: "{{ registry_password }}"
 
@@ -49,7 +49,7 @@
   check_mode: false
   ansible.builtin.template:
     src: registry_config.yaml.j2
-    dest: "{{ registry.root }}/config.yaml"
+    dest: "{{ registry.root }}/config.yml"
     mode: "0644"
 
 - name: Copy compose file
