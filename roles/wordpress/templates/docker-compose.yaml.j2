@@ -19,7 +19,7 @@ services:
             MYSQL_PASSWORD: {{ wordpress_db_password }}
 
     wordpress:
-        image: {{ registry.domain }}/wordpress:6-php8.1-fpm
+        image: {{ registry.domain }}/wordpress:6
         container_name: wordpress
         volumes:
             - wp-data:/var/www/html
