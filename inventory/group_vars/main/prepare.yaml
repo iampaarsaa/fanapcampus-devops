@@ -28,3 +28,10 @@ dnssec: allow-downgrade
 dns_over_tls: opportunistic
 
 root_domain: mahmoudisari.ir
+cloudflare_zone_name: tooperfect.ir
+subdomains:
+  registry_subdomain: reg
+  wordpress_subdomain: wp
+  subdomains_aslist:
+    - reg
+    - wp

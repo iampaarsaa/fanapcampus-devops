@@ -1,5 +1,5 @@
 registry:
-  domain: "reg.{{ root_domain }}"
+  domain: "{{ subdomains.registry_subdomain }}.{{ root_domain }}"
   user: parsa
   root: /etc/registry/
   data: /etc/registry/data

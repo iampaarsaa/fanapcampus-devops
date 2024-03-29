@@ -1,6 +1,6 @@
 ---
 wordpress:
   root: /etc/wordpress
-  domain: "wp.{{ root_domain }}"
+  domain: "{{ subdomains.wordpress_subdomain }}.{{ root_domain }}"
   db_name: wordpress
   db_user: parsa
