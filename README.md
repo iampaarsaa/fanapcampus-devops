@@ -12,23 +12,17 @@ This Ansible project automates the process of server hardening followed by setti
 1. Ensure Ansible is installed on your controller node(s).
 2. Clone this repository on the controller node(s).
 3. Put the Vault's password in [.secrets](.secrets) file
-4. Decrypt [vault](inventory/group_vars/main/vault.yaml) using:
-
-    ```bash
-    ansible-vault decrypt inventory/group_vars/main/vault.yaml
-    ```
-
-5. Set managed node(s) host and other configurations in the [hosts.yaml](inventory/hosts.yaml).
+4. Set managed node(s) host and other configurations in the [hosts.yaml](inventory/hosts.yaml).
 
     **Note:** Ensure controller node can connect to the managed nodes using ssh
 
-6. Run the Ansible playbook:
+5. Run the Ansible playbook:
 
     ```bash
     ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory/hosts.yaml playbook.yaml
     ```
 
-## What it does?
+## What does this playbook do?
 
 1. **Prepares the server:**
     - Installs common packages
@@ -37,9 +31,9 @@ This Ansible project automates the process of server hardening followed by setti
     - Execute server hardening tasks to enhance server security.
 
 2. **Runs a private Docker registry:**
-    - Installs docker and docker compose
+    - Installs Docker and compose plugin (aka `docker-compose`)
     - Deploys a private local registry at reg.mahmoudisari.ir which serves as a cache registry, under reg.
 
-3. **Deploys a Wordpress site:**
-    - Runs Wordpress and MySQL on Docker
+3. **Deploys a WordPress site:**
+    - Runs WordPress and MySQL on Docker
     - Configures nginx to server the website at wp.mahmoudisari.ir
