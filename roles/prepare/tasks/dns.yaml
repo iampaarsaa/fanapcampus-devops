@@ -38,3 +38,18 @@
     mode: "0644"
     backup: true
     follow: true
+
+- name: Set Cloudflare's New <A> Record
+  become: true
+  check_mode: false
+  community.general.cloudflare_dns:
+    solo: false
+    state: present
+    timeout: 60
+    type: A
+    zone: "{{ cloudflare_dns.zoneName }}"
+    api_token: "{{ cloudflare_dns.apiToken }}"
+    account_api_key: "{{ cloudflare_dns.accountToken }}"
+    record: "{{ item }}"
+    value: "{{ ansible_host }}"
+  loop: "{{ cloudflare_dns.record_names }}"
