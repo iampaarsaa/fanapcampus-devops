@@ -7,10 +7,10 @@
     state: present
     timeout: 60
     type: A
-    zone: "{{ cloudflare_dns.zoneName }}"
-    api_token: "{{ cloudflare_dns.apiToken }}"
-    account_api_key: "{{ cloudflare_dns.accountToken }}"
-    account_email: "{{ cloudflare_dns.accountEmail }}"
+    zone: "{{ cloudflare_dns.zone_name }}"
+    api_token: "{{ cloudflare_dns.api_token }}"
+    account_api_key: "{{ cloudflare_dns.account_token }}"
+    account_email: "{{ cloudflare_dns.account_email }}"
     record: "{{ item }}"
     value: "{{ ansible_host }}"
   loop: "{{ cloudflare_dns.record_names }}"
