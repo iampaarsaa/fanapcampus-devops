@@ -50,6 +50,7 @@
     zone: "{{ cloudflare_dns.zoneName }}"
     api_token: "{{ cloudflare_dns.apiToken }}"
     account_api_key: "{{ cloudflare_dns.accountToken }}"
+    account_email: "{{ cloudflare_dns.accountEmail }}"
     record: "{{ item }}"
   loop: "{{ cloudflare_dns.record_names }}"
 
@@ -64,6 +65,7 @@
     zone: "{{ cloudflare_dns.zoneName }}"
     api_token: "{{ cloudflare_dns.apiToken }}"
     account_api_key: "{{ cloudflare_dns.accountToken }}"
+    account_email: "{{ cloudflare_dns.accountEmail }}"
     record: "{{ item }}"
     value: "{{ ansible_host }}"
   loop: "{{ cloudflare_dns.record_names }}"
