@@ -1,6 +1,9 @@
 ---
 wordpress:
   root: /etc/wordpress
-  domain: "{{ subdomains.wordpress_subdomain }}.{{ root_domain }}"
+  subdomain: wp
   db_name: wordpress
   db_user: parsa
+
+# not defined as wordpress.domain to prevent infinite loop
+wordpress_domain: "{{ wordpress.subdomain }}.{{ root_domain }}"

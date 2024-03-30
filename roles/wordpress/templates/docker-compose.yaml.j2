@@ -5,7 +5,7 @@ networks:
 
 services:
     mysql:
-        image: {{ registry.domain }}/mysql:8.0
+        image: {{ registry_domain }}/mysql:8.0
         container_name: mysql
         volumes:
             - db-data:/var/lib/mysql
@@ -19,7 +19,7 @@ services:
             MYSQL_PASSWORD: {{ wordpress_db_password }}
 
     wordpress:
-        image: {{ registry.domain }}/wordpress:6
+        image: {{ registry_domain }}/wordpress:6
         container_name: wordpress
         volumes:
             - wp-data:/var/www/html

@@ -8,7 +8,7 @@ map $upstream_http_docker_distribution_api_version $docker_distribution_api_vers
 
 server {
     listen 443 ssl;
-    server_name {{ registry.domain }};
+    server_name {{ registry_domain }};
 
     client_max_body_size 0;
 

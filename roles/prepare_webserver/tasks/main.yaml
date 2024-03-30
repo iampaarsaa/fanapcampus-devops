@@ -7,13 +7,15 @@
     state: present
     timeout: 60
     type: A
-    zone: "{{ cloudflare_zone_name }}"
+    zone: "{{ root_domain }}"
     api_token: "{{ cloudflare_dns.api_token }}"
     account_api_key: "{{ cloudflare_dns.account_token }}"
     account_email: "{{ cloudflare_dns.account_email }}"
     record: "{{ item }}"
     value: "{{ ansible_host }}"
-  loop: "{{ subdomain.subdomains_aslist }}"
+  loop:
+    - "{{ wordpress.subdomain }}"
+    - "{{ registry.subdomain }}"
 
 - name: Create certificates directory
   become: true

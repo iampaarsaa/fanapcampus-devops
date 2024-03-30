@@ -18,7 +18,7 @@
     dest: "{{ wordpress.root }}/docker-compose.yaml"
     mode: "0644"
 
-- name: Copy nginx configurations
+- name: Copy wordpress nginx configurations
   become: true
   check_mode: false
   ansible.builtin.template:
