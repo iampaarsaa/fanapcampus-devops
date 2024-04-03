@@ -1,21 +1,27 @@
 ---
-- name: Set Cloudflares New <A> Records
-  become: true
+- name: Install validators packages (local machine)
+  become: false
   check_mode: false
-  community.general.cloudflare_dns:
-    solo: true
+  ansible.builtin.pip:
+    name: "{{ item }}"
     state: present
-    timeout: 60
-    type: A
-    zone: "{{ root_domain }}"
-    api_token: "{{ cloudflare_dns.api_token }}"
-    account_api_key: "{{ cloudflare_dns.account_token }}"
-    account_email: "{{ cloudflare_dns.account_email }}"
-    record: "{{ item }}"
-    value: "{{ ansible_host }}"
+  delegate_to: localhost
   loop:
-    - "{{ wordpress.subdomain }}"
-    - "{{ registry.subdomain }}"
+    - validators
+    - requests
+
+- name: Execute arvancloud_api.py (local machine)
+  become: false
+  check_mode: false
+  ansible.builtin.command:
+    chdir: "{{ role_path }}"
+    cmd: "python3 \
+      files/arvancloud_api.py \
+      --subdomain {{ wordpress.subdomain }} {{ registry.subdomain }} \
+      --domain {{ root_domain }} --apikey {{ arvancloud_api.apikey }} \
+      --ip {{ ansible_host }}"
+  changed_when: false
+  delegate_to: localhost
 
 - name: Create certificates directory
   become: true
