@@ -14,9 +14,11 @@ This Ansible project automates the process of server hardening followed by setti
 3. Put the Vault's password in [.secrets](.secrets) file
 4. Set managed node(s) host and other configurations in the [hosts.yaml](inventory/hosts.yaml).
 
-    **Note:** Ensure controller node can connect to the managed nodes using ssh
+    **Note:** Ensure controller node can connect to the managed nodes using ssh.
 
 5. Run the Ansible playbook:
+
+    **Note:** Ensure No proxy is set on controller node(s) before running ansible.
 
     ```bash
     ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory/hosts.yaml playbook.yaml
