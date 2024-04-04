@@ -73,7 +73,6 @@
   become: true
   community.docker.docker_compose_v2:
     project_src: "{{ registry.root }}"
-    wait: true
   environment: "{{ proxy_env }}"
 
 - name: Docker login to registry

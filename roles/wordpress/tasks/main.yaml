@@ -39,7 +39,6 @@
   become: true
   community.docker.docker_compose_v2:
     project_src: "{{ wordpress.root }}"
-    wait: true
   environment: "{{ proxy_env }}"
 
 - name: Restarting Nginx container
