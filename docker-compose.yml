@@ -1,0 +1,26 @@
+services:
+  elasticsearch:
+    image: elasticsearch:${STACK_VERSION}
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - elk_network
+    ports:
+      - ${ES_PORT}:${ES_PORT}
+    healthcheck:
+      test: ["CMD","curl","-f","http://localhost:${ES_PORT}"]
+      interval: ${HEALTHCHECK_INTERVAL}
+      timeout: 10s
+      retries: 10
+
+  kibana:
+    image: kibana:${STACK_VERSION}
+    volumes:
+      - kibana_data:/usr/share/kibana/data
+    networks:
+      - elk_network
+    ports:
+      - ${KIB_PORT}:${KIB_PORT}
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
