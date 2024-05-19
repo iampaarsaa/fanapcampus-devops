@@ -1,3 +1,19 @@
+networks:
+  elk_network:
+    ipam:
+      config:
+        - subnet: ${SUBNET_RANGE}
+    name: elk_network
+    driver: ${NETWORK_DRIVER}
+
+volumes:
+  elasticseasrch_data:
+    name: elasticsearch_data
+    driver: ${VOLUME_DRIVER}
+  kibana_data:
+    name: kibana_data
+    driver: ${VOLUME_DRIVER}
+
 services:
   elasticsearch:
     image: elasticsearch:${STACK_VERSION}
