@@ -1,6 +1,16 @@
 # Docker Project: Elasticsearch and Kibana
+## Usage
 
-## Setup
+To allocate enough virtual memory, use the following command:
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
+
+To start the services, use the following command:
+```bash
+docker compose up -d
+```
+## More Details:
 
 The project uses Docker Compose to define and run the multi-container Docker applications. The `docker-compose.yml` file is used to define the services, networks, and volumes.
 
@@ -28,14 +38,4 @@ A healthcheck is defined for the Elasticsearch service to check the health of th
 
 Environment variables are defined in the `.env` file. These include the stack version, ports for Elasticsearch and Kibana, healthcheck interval, volume driver, network driver, and subnet range.
 
-## Usage
 
-To allocate enough virtual memory, use the following command:
-```bash
-sudo sysctl -w vm.max_map_count=262144
-```
-
-To start the services, use the following command:
-```bash
-docker compose up -d
-```
