@@ -7,7 +7,7 @@ networks:
     driver: ${NETWORK_DRIVER}
 
 volumes:
-  elasticseasrch_data:
+  elasticsearch_data:
     name: elasticsearch_data
     driver: ${VOLUME_DRIVER}
   kibana_data:
@@ -16,21 +16,27 @@ volumes:
 
 services:
   elasticsearch:
-    image: elasticsearch:${STACK_VERSION}
+    container_name: elasticsearch
+    image: docker.arvancloud.ir/elasticsearch:${STACK_VERSION}
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
     networks:
       - elk_network
     ports:
       - ${ES_PORT}:${ES_PORT}
     healthcheck:
-      test: ["CMD","curl","-f","http://localhost:${ES_PORT}"]
+      test: ["CMD-SHELL","curl -s http://localhost:${ES_PORT}/_cat/health | grep green"]
       interval: ${HEALTHCHECK_INTERVAL}
       timeout: 10s
       retries: 10
 
   kibana:
-    image: kibana:${STACK_VERSION}
+    container_name: kibana
+    image: docker.arvancloud.ir/kibana:${STACK_VERSION}
     volumes:
       - kibana_data:/usr/share/kibana/data
     networks:

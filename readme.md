@@ -30,8 +30,12 @@ Environment variables are defined in the `.env` file. These include the stack ve
 
 ## Usage
 
-**Important Note: Before getting started, make sure the latest version of Docker and Docker Compose are installed on your device. Also, be aware of Docker Hub's restrictions regarding US sanctions. Don't forget to use a Virtual Private Network (VPN) if necessary.**
+To allocate enough virtual memory, use the following command:
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
 
 To start the services, use the following command:
 ```bash
-docker compose up
+docker compose up -d
+```
