@@ -7,7 +7,7 @@ services:
       - "8080:8080"
     deploy:
       mode: replicated
-      replicas: 5
+      replicas: 6
       placement:
         constraints: [node.role == worker]
         max_replicas_per_node: 3
