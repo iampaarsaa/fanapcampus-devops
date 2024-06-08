@@ -11,7 +11,7 @@ It will output a join command for worker node.
 ## Step 02:
 Join the worker node to the swarm cluster
 ```bash
-docker swarm join --token mytoken masterip:2377
+docker swarm join --token required-token required-ipaddress:port
 ```
 
 ## Step 03:
@@ -23,12 +23,12 @@ docker node ls
 ## Step 04:
 Deploy the Tomcat stack on the cluster:
 ```bash
-docker stack deploy -c stack.yaml tomcat-stack
+docker stack deploy -c stack.yaml tomcat_stack
 ```
 
 ## Step 05:
 Check the status of cluster:
 ```bash
-docker stack services tomcat-stack
-docker stack ps tomcat-stack
+docker stack services tomcat_stack
+docker stack ps tomcat_stack
 ```
