@@ -1,0 +1,22 @@
+---
+docker:
+  obsolete_packages:
+    - docker.io
+    - docker-doc
+    - docker-compose
+    - docker-compose-v2
+    - podman-docker
+    - containerd
+    - runc
+
+  latest_packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-compose-plugin
+
+  remote_registry: hub.hamdocker.ir
+
+  proxy:
+    http_proxy: "http://127.0.0.1:1081"
+    no_proxy: "hub.hamdocker.ir,reg.mahmoudisari.ir"

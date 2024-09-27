@@ -1,0 +1,35 @@
+---
+- name: Reload systemd
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart ntp service
+  become: true
+  ansible.builtin.service:
+    name: ntp
+    state: restarted
+
+- name: Restart ssh service
+  become: true
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+
+- name: Restart iptables service
+  become: true
+  ansible.builtin.service:
+    name: iptables
+    state: restarted
+
+- name: Restart auditd service
+  become: true
+  ansible.builtin.service:
+    name: auditd
+    state: restarted
+
+- name: Generate auditd rules
+  become: true
+  ansible.builtin.command:
+    cmd: "augenrules"
+  changed_when: false

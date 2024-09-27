@@ -1,0 +1,86 @@
+---
+- name: Remove nginx from host
+  become: true
+  ansible.builtin.apt:
+    name: nginx
+    state: absent
+    autoremove: true
+
+- name: Create project directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+  loop:
+    - "{{ registry.root }}"
+    - "{{ registry.data }}"
+    - /etc/nginx/conf.d
+
+- name: Copy nginx default config
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: default.conf.j2
+    dest: /etc/nginx/conf.d/default.conf
+    mode: "0644"
+
+- name: Copy registry nginx configurations
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: registry.conf.j2
+    dest: /etc/nginx/conf.d/registry.conf
+    mode: "0644"
+
+- name: Create nginx.htpasswd
+  become: true
+  check_mode: false
+  community.general.htpasswd:
+    path: "{{ registry.root }}/nginx.htpasswd"
+    state: present
+    mode: "0644"
+    name: "{{ registry.user }}"
+    password: "{{ registry_password }}"
+
+- name: Copy registry config
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: registry_config.yaml.j2
+    dest: "{{ registry.root }}/config.yml"
+    mode: "0644"
+
+- name: Copy compose file
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: "{{ registry.root }}/docker-compose.yaml"
+    mode: "0644"
+
+- name: Test registry compose file
+  become: true
+  check_mode: false
+  ansible.builtin.command:
+    cmd: "docker compose -f {{ registry.root }}/docker-compose.yaml config"
+  changed_when: false
+  failed_when: false
+
+- name: Docker compose up registry
+  check_mode: false
+  become: true
+  community.docker.docker_compose_v2:
+    project_src: "{{ registry.root }}"
+  environment: "{{ proxy_env }}"
+
+- name: Docker login to registry
+  become: true
+  check_mode: false
+  community.docker.docker_login:
+    registry_url: "https://{{ registry_domain }}"
+    username: "{{ registry.user }}"
+    password: "{{ registry_password }}"
+    state: present
+    timeout: 60

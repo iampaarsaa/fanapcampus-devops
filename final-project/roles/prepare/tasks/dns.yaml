@@ -1,0 +1,40 @@
+---
+- name: Set hostname
+  become: true
+  check_mode: false
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Set hostname in /etc/hosts
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: hostnames.j2
+    dest: /etc/hosts
+    mode: "0644"
+    backup: true
+
+- name: Configure resolved (DNS service)
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Configure resolv.conf (Default DNS)
+  become: true
+  check_mode: false
+  ansible.builtin.copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+    follow: true

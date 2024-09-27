@@ -1,0 +1,30 @@
+---
+packages:
+  - software-properties-common
+  - sudo
+  - telnet
+  - wget
+  - curl
+  - git
+  - vim
+  - jq
+  - unzip
+  - zip
+  - net-tools
+  - dnsutils
+  - ntp
+  - apache2-utils
+  - python3-passlib
+  # hardening packages
+  - auditd
+  - fail2ban
+  - iptables-persistent
+  - libpwquality-common
+  - cracklib-runtime
+
+dns: 8.8.8.8 1.1.1.1
+fallback_dns: 9.9.9.9 4.2.2.4
+dnssec: allow-downgrade
+dns_over_tls: opportunistic
+
+root_domain: mahmoudisari.ir

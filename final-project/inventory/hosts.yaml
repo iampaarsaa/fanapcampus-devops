@@ -1,0 +1,8 @@
+all:
+  children:
+    main:
+      hosts:
+        docker:
+          ansible_host: 185.231.183.112
+          ansible_user: ubuntu
+          ansible_port: 22

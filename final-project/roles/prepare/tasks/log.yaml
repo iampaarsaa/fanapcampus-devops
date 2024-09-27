@@ -1,0 +1,182 @@
+---
+- name: Set Debian audit grub cmdline
+  become: true
+  ansible.builtin.lineinfile:
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX {{ auditd.grub_cmdline }} {{ auditd.grub_backlog_cmdline }}"'
+    dest: /etc/default/grub.d/99-hardening-audit.cfg
+    state: present
+    create: true
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Set audit action_mail_acct
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^action_mail_acct ="
+    line: "action_mail_acct = {{ auditd.action_mail_acct }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit admin_space_left_action
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^admin_space_left_action = "
+    line: "admin_space_left_action = {{ auditd.admin_space_left_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit disk_error_action
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^disk_error_action ="
+    line: "disk_error_action = {{ auditd.disk_error_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit disk_full_action
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^disk_full_action ="
+    line: "disk_full_action = {{ auditd.disk_full_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit max_log_file
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^max_log_file ="
+    line: "max_log_file = {{ auditd.max_log_file }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit max_log_file_action
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^max_log_file_action ="
+    line: "max_log_file_action = {{ auditd.max_log_file_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit num_logs
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^num_logs ="
+    line: "num_logs = {{ auditd.num_logs }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit space_left
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^space_left ="
+    line: "space_left = {{ auditd.space_left }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Set audit space_left_action
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: "^space_left_action ="
+    line: "space_left_action = {{ auditd.space_left_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: "0640"
+    state: present
+    create: false
+
+- name: Configure auditd hardening rules
+  become: true
+  ansible.builtin.template:
+    src: hardening.rules.j2
+    dest: /etc/audit/rules.d/hardening.rules
+    backup: true
+    mode: "0600"
+    owner: root
+    group: root
+  when: auditd.apply_audit_rules|bool
+  notify:
+    - Generate auditd rules
+    - Restart auditd service
+
+- name: Configure systemd journal
+  become: true
+  ansible.builtin.template:
+    src: journald.conf.j2
+    dest: /etc/systemd/journald.conf
+    backup: true
+    mode: "0644"
+    owner: root
+    group: root
+  notify:
+    - Reload systemd
+
+- name: Configure logrotate
+  become: true
+  ansible.builtin.template:
+    src: logrotate.conf.j2
+    dest: /etc/logrotate.conf
+    backup: true
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: Add cron job to logrotate daily
+  become: true
+  ansible.builtin.lineinfile:
+    line: "/usr/sbin/logrotate /etc/logrotate.conf"
+    dest: /etc/cron.daily/logrotate
+    mode: "0750"
+    state: present
+    create: true
+
+- name: Ensure rsyslog.conf exists
+  become: true
+  ansible.builtin.stat:
+    path: /etc/rsyslog.conf
+  register: rsyslogconf
+
+- name: Get rsyslog.conf FileCreateMode
+  become: true
+  environment:
+    PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  ansible.builtin.shell: grep "^$FileCreateMode" /etc/rsyslog.conf
+  register: rsyslog_filecreatemode
+  changed_when: false
+  when: rsyslogconf.stat.exists
+
+- name: Set rsyslog.conf FileCreateMode
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: '^\$FileCreateMode'
+    line: "$FileCreateMode 0600"
+    dest: /etc/rsyslog.conf
+    mode: "0640"
+    state: present
+    create: "no"
+  when: rsyslogconf.stat.exists and rsyslog_filecreatemode.stdout.find('FileCreateMode') != -1
+
+- name: Set rsyslog.d FileCreateMode
+  become: true
+  ansible.builtin.lineinfile:
+    regexp: '^\$FileCreateMode'
+    line: "$FileCreateMode 0600"
+    dest: /etc/rsyslog.d/99-filecreatemode.conf
+    mode: "0644"
+    state: present
+    create: true

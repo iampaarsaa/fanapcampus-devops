@@ -1,0 +1,8 @@
+registry:
+  subdomain: reg
+  user: parsa
+  root: /etc/registry/
+  data: /etc/registry/data
+
+# not defined as registry.domain to prevent infinite loop
+registry_domain: "{{ registry.subdomain }}.{{ root_domain }}"

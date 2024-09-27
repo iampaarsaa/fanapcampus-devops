@@ -1,0 +1,93 @@
+---
+- name: Install required system packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+    state: present
+    update_cache: true
+
+- name: Remove obsolete Docker packages
+  become: true
+  check_mode: false
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: absent
+    purge: true
+    clean: true
+    lock_timeout: 60
+  loop: "{{ docker.obsolete_packages }}"
+
+- name: Get GPG key of Docker repository
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  environment: "{{ proxy_env }}"
+
+- name: Add Docker repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu jammy stable
+    state: present
+  environment: "{{ proxy_env }}"
+
+- name: Install Docker
+  become: true
+  check_mode: false
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    update_cache_retries: 3
+    lock_timeout: 60
+    force_apt_get: true
+  loop: "{{ docker.latest_packages }}"
+  environment: "{{ proxy_env }}"
+
+- name: Create Docker config directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+    recurse: true
+  loop:
+    - /etc/docker
+    - /etc/systemd/system/docker.service.d/
+
+- name: Start and enable Docker service
+  become: true
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+# Customize configuration
+
+- name: Copy Docker config
+  become: true
+  check_mode: false
+  ansible.builtin.template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    backup: true
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Customize Docker service
+  become: true
+  ansible.builtin.template:
+    src: docker.service.j2
+    dest: /etc/systemd/system/docker.service.d/override.conf
+    mode: "0644"
+
+- name: Restart Docker service and daemon-reload to pick up config changes
+  become: true
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: true
+    name: docker

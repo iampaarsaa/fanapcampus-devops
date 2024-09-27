@@ -1,0 +1,29 @@
+---
+networks:
+    webserver:
+        name: webserver
+
+services:
+    registry:
+        image: {{docker.remote_registry}}/registry:latest
+        container_name: registry
+        volumes:
+            - {{registry.data}}:/var/lib/registry
+            - {{registry.root}}:/etc/docker/registry
+        networks:
+            - webserver
+        restart: always
+    nginx:
+        image: hub.hamdocker.ir/nginx:latest
+        container_name: nginx
+        volumes:
+            - /etc/nginx/conf.d:/etc/nginx/conf.d
+            - {{registry.root}}:/etc/nginx/auth
+            - /etc/certs:/etc/certs/
+        networks:
+            - webserver
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - registry

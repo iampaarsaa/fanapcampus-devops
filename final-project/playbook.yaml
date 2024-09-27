@@ -1,0 +1,21 @@
+---
+- name: Prepare Server
+  hosts: main
+  gather_facts: true
+  roles:
+    - { role: prepare, become: true }
+    - { role: proxy, become: true }
+    - { role: prepare_webserver, become: true }
+
+- name: Setup Docker registry
+  hosts: main
+  gather_facts: true
+  roles:
+    - { role: docker, become: true }
+    - { role: registry, become: true }
+
+- name: Setup Wordpress
+  hosts: main
+  gather_facts: true
+  roles:
+    - { role: wordpress, become: true }

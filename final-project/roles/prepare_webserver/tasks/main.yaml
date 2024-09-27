@@ -1,0 +1,57 @@
+---
+- name: Install validators packages (local machine)
+  become: false
+  check_mode: false
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    state: present
+  delegate_to: localhost
+  loop:
+    - validators
+    - requests
+
+- name: Execute arvancloud_api.py (local machine)
+  become: false
+  check_mode: false
+  ansible.builtin.command:
+    chdir: "{{ role_path }}"
+    cmd: "python3 \
+      files/arvancloud_api.py \
+      --subdomain {{ wordpress.subdomain }} {{ registry.subdomain }} \
+      --domain {{ root_domain }} --apikey {{ arvancloud_api.apikey }} \
+      --ip {{ ansible_host }}"
+  changed_when: false
+  delegate_to: localhost
+
+- name: Create certificates directory
+  become: true
+  check_mode: false
+  ansible.builtin.file:
+    path: /etc/certs/{{ root_domain }}
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+    recurse: true
+  tags: ssl
+
+- name: Add private key
+  become: true
+  ansible.builtin.template:
+    src: privkey.pem.j2
+    dest: "/etc/certs/{{ root_domain }}/privkey.pem"
+    owner: root
+    group: root
+    mode: "0644"
+  tags: ssl
+
+- name: Add full-chain certificate
+  become: true
+  check_mode: false
+  ansible.builtin.copy:
+    src: fullchain.pem
+    dest: "/etc/certs/{{ root_domain }}/fullchain.pem"
+    owner: root
+    group: root
+    mode: "0644"
+  tags: ssl
